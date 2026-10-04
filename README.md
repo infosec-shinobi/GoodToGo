@@ -63,6 +63,9 @@ docker compose up --build
 
 Open <http://localhost:8080>.
 
+To expose the app on a different host port, set `APP_PORT` in `.env` and update
+`APP_BASE_URL` to match.
+
 ## Quick start for local development
 
 Python 3.12 or newer is recommended.
