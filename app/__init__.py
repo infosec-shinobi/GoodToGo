@@ -1,0 +1,2 @@
+"""GoodToGo application package."""
+

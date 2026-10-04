@@ -1,0 +1,2 @@
+"""Versioned product content catalogs."""
+

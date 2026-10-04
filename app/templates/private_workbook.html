@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-heading no-print">
+  <p class="eyebrow">Private session</p>
+  <h1>{{ catalog.workbook.title }}</h1>
+  <p class="lede">Answer what you can. “Not sure” is useful because it creates a concrete follow-up task.</p>
+  <div class="notice warning">
+    <strong>No passwords or recovery codes.</strong>
+    Record where credentials are secured, not the credentials themselves.
+  </div>
+</section>
+
+<section class="workbook-toolbar no-print" aria-label="Workbook controls">
+  <div>
+    <span class="progress-label"><span id="answered-count">0</span> of <span id="question-count">0</span> answered</span>
+    <div class="progress-track" aria-hidden="true"><div id="progress-bar" class="progress-bar"></div></div>
+  </div>
+  <label class="toggle-label">
+    <input id="device-save" type="checkbox">
+    <span>Remember answers on this device</span>
+  </label>
+  <button id="print-workbook" class="button secondary" type="button">Print / save full workbook</button>
+</section>
+
+<nav class="section-nav no-print" aria-label="Workbook sections">
+  {% for section in catalog.workbook.sections %}
+  <a href="#section-{{ section.id }}">
+    <span>{{ loop.index }}. {{ section.title }}</span>
+    <span>{{ section.estimated_minutes }} min</span>
+  </a>
+  {% endfor %}
+</nav>
+
+<form id="private-workbook" class="workbook" autocomplete="off">
+  {% for section in catalog.workbook.sections %}
+  <section class="workbook-section" aria-labelledby="section-{{ section.id }}">
+    <header>
+      <p class="eyebrow">Section {{ loop.index }}</p>
+      <h2 id="section-{{ section.id }}">{{ section.title }}</h2>
+      <p>{{ section.description }}</p>
+      <p class="section-estimate">Estimated time: {{ section.estimated_minutes }} minutes</p>
+    </header>
+    <div class="question-list">
+      {% for question in section.questions %}
+      <fieldset class="question-card" data-question-id="{{ question.id }}">
+        <legend>{{ question.prompt }}</legend>
+        <p class="help-text">{{ question.help_text }}</p>
+        <div class="choice-grid">
+          {% for value, label in [('complete', 'Ready'), ('in_progress', 'In progress'), ('not_started', 'Not started'), ('not_sure', 'Not sure'), ('not_applicable', 'Not applicable')] %}
+          <label class="choice">
+            <input type="radio" name="{{ question.id }}" value="{{ value }}">
+            <span>{{ label }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      {% endfor %}
+    </div>
+  </section>
+  {% endfor %}
+</form>
+
+<section id="take-home" class="take-home" aria-labelledby="take-home-title">
+  <header>
+    <p class="eyebrow">Personalized follow-up</p>
+    <h2 id="take-home-title">Your take-home list</h2>
+    <p id="take-home-summary">Answer workbook questions to build a prioritized list.</p>
+  </header>
+  <ol id="task-list" class="task-list"></ol>
+  <div class="button-row no-print">
+    <button id="print-tasks" class="button primary" type="button">Print / save take-home list</button>
+    <button id="clear-answers" class="button danger" type="button">Clear this session</button>
+  </div>
+</section>
+
+<p class="print-footer">
+  Generated from content pack {{ catalog.workbook.version }}, reviewed {{ catalog.workbook.last_reviewed }}.
+  {{ catalog.workbook.disclaimer }}
+</p>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='/js/workbook.js') }}"></script>
+{% endblock %}

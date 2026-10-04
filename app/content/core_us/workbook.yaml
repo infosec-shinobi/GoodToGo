@@ -1,0 +1,226 @@
+id: core-us-oh
+version: "0.1.0"
+title: GoodToGo Workbook
+jurisdiction: US-OH
+last_reviewed: "2026-09-11"
+disclaimer: This educational organizer does not provide legal, tax, financial, or medical advice. Confirm legal documents and decisions with qualified professionals in your jurisdiction.
+sections:
+  - id: people-and-roles
+    title: People and responsibilities
+    description: Identify who can act, confirm they are willing, and document where their authority comes from.
+    estimated_minutes: 8
+    questions:
+      - id: roles.executor
+        prompt: Have you named an executor and a backup executor in an up-to-date will?
+        help_text: Record who they are, whether they agreed, and where the signed original is stored. Do not treat an entry here as a legal appointment.
+        sensitivity: sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Confirm your executor and backup executor
+          details: Speak with the people you want to serve and review the appointment with an estate-planning attorney.
+          priority: critical
+      - id: roles.healthcare-agent
+        prompt: Have you named a health care agent and shared your care preferences with them?
+        help_text: Confirm the agent has a copy or knows where the signed directive is located.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Choose and brief a health care agent
+          details: Discuss your values and complete the appropriate health care power of attorney for your state.
+          priority: critical
+      - id: roles.guardian
+        prompt: If anyone depends on you, have you nominated caregivers or guardians and confirmed their willingness?
+        help_text: Consider minor children, adult dependents, and pets. Legal guardianship nominations should be reviewed professionally.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Create a dependent and pet care plan
+          details: Confirm primary and backup caregivers, document routines, and address legal guardianship where applicable.
+          priority: critical
+
+  - id: legal-and-health
+    title: Legal and health readiness
+    description: Create or locate authoritative documents for incapacity and death.
+    estimated_minutes: 8
+    questions:
+      - id: legal.will
+        prompt: Do you have a current, properly executed will whose original can be found?
+        help_text: The app records status and location. It does not generate or validate a will.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Create or update your will
+          details: Consult a qualified attorney, especially when minor children, trusts, businesses, blended families, or substantial assets are involved.
+          priority: critical
+      - id: legal.financial-poa
+        prompt: Do you have an appropriate durable financial power of attorney?
+        help_text: The person acting during incapacity may be different from the executor acting after death.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Review durable financial power of attorney
+          details: Choose a trusted agent and have the document prepared or reviewed for your jurisdiction.
+          priority: critical
+      - id: health.advance-directive
+        prompt: Are your advance directive and health care power of attorney current and available?
+        help_text: Store the signed location and identify who has copies. Medical orders may require a clinician.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Complete or review advance care documents
+          details: Discuss care preferences with your health care agent and clinician, then distribute copies appropriately.
+          priority: critical
+
+  - id: financial-and-insurance
+    title: Financial and insurance inventory
+    description: Make assets, debts, benefits, beneficiaries, and recurring transactions discoverable without duplicating credentials.
+    estimated_minutes: 10
+    questions:
+      - id: finance.inventory
+        prompt: Can a trusted person locate a current inventory of your accounts, property, income, and debts?
+        help_text: Record institution, purpose, ownership, last four digits, contact details, and credential location rather than passwords.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Build a financial inventory
+          details: List accounts, assets, liabilities, automatic payments, automatic deposits, and the location of recent statements.
+          priority: high
+      - id: finance.beneficiaries
+        prompt: Have you reviewed beneficiaries and account ownership after your latest major life event?
+        help_text: Review retirement, insurance, payable-on-death, transfer-on-death, and jointly titled assets with a professional.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Review beneficiaries and account titling
+          details: Compare current designations with your estate plan and resolve inconsistencies with qualified advisors.
+          priority: high
+      - id: insurance.inventory
+        prompt: Are life, disability, health, home, auto, umbrella, long-term care, and other policies documented?
+        help_text: Include insurer, policy number or last four digits, agent, claim contact, beneficiary, and document location.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Complete the insurance inventory
+          details: Record active policies, claim contacts, renewal dates, beneficiaries, and where declarations or policy documents are stored.
+          priority: high
+
+  - id: digital-life
+    title: Digital life
+    description: Preserve access to identity anchors, data, and valuable accounts using provider-supported mechanisms.
+    estimated_minutes: 12
+    questions:
+      - id: digital.password-manager
+        prompt: Is password-manager emergency access or a recovery plan configured and tested?
+        help_text: Record which product you use and where the recovery instructions are kept. Do not enter the master password or recovery codes here.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Configure password-manager emergency access
+          details: Choose a trusted person, configure the provider-supported process, and complete a supervised recovery test.
+          priority: critical
+          resource_ids: [bitwarden-emergency-access, onepassword-emergency-kit, onepassword-family-recovery]
+      - id: digital.google
+        prompt: If you use Google, is Inactive Account Manager configured?
+        help_text: Decide who may receive selected data, when the plan activates, and whether the account should later be deleted.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Configure Google Inactive Account Manager
+          details: Select trusted contacts, shared data categories, timing, and account deletion preferences.
+          priority: high
+          resource_ids: [google-inactive-account-manager]
+      - id: digital.apple
+        prompt: If you use Apple, have you added a Legacy Contact and preserved the access key?
+        help_text: Confirm the contact received the key and keep a printed copy with appropriate estate documents.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Configure an Apple Legacy Contact
+          details: Add the contact, share the access key, and confirm where a backup copy is stored.
+          priority: high
+          resource_ids: [apple-add-legacy-contact]
+      - id: digital.social-and-code
+        prompt: Have you decided what should happen to social profiles, websites, domains, and code repositories?
+        help_text: Record preserve, memorialize, transfer, export, close, or delete instructions for each important service.
+        sensitivity: sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Record social, domain, website, and repository instructions
+          details: Configure available legacy contacts or successors and document post-death procedures for services without them.
+          priority: medium
+          resource_ids: [facebook-legacy-contact, github-deceased-user-policy, x-deceased-account]
+      - id: digital.devices-and-2fa
+        prompt: Can a trusted person identify your devices, primary email, mobile number, two-factor methods, and recovery path?
+        help_text: Do not place raw passcodes, seeds, or recovery codes in this workbook. Point to a separately secured recovery kit.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Document the digital identity recovery chain
+          details: Identify primary email, phone and SIM ownership, devices, authenticators, hardware keys, backup methods, and credential locations.
+          priority: critical
+
+  - id: household-continuity
+    title: Household continuity
+    description: Document the systems and routines another person would need to keep the home running safely.
+    estimated_minutes: 10
+    questions:
+      - id: household.utilities
+        prompt: Are utilities, recurring services, subscriptions, and automatic payments documented?
+        help_text: Include account owner, provider contact, billing source, renewal date, and whether service should continue or be canceled.
+        sensitivity: sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Inventory utilities and recurring services
+          details: List essential services first, then subscriptions, memberships, deliveries, and recurring donations.
+          priority: high
+      - id: household.systems
+        prompt: Could someone operate and recover your router, Wi-Fi, security system, smart home, NAS, and backups?
+        help_text: Document topology, vendor, purpose, recovery procedure, and credential location. Do not duplicate administrative passwords.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Write the home technology continuity guide
+          details: Cover internet, router and Wi-Fi, alarm and cameras, smart-home controller, computers, storage, backups, domains, and self-hosted services.
+          priority: high
+      - id: household.emergency-operations
+        prompt: Are shutoffs, emergency contacts, keys, vendors, and essential household routines documented?
+        help_text: Include water, gas, electric, HVAC, vehicles, childcare, pets, and trusted service providers.
+        sensitivity: sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Create the household emergency operations page
+          details: Photograph or describe shutoffs, identify keys and contacts, and write the routines normally handled by one person.
+          priority: high
+
+  - id: wishes-and-handoff
+    title: Wishes, communication, and handoff
+    description: Make personal preferences known and verify that trusted people can find what they need.
+    estimated_minutes: 8
+    questions:
+      - id: wishes.final-arrangements
+        prompt: Have you written down funeral, memorial, burial, cremation, donation, obituary, and cultural preferences?
+        help_text: Distinguish preferences from prepaid contracts or legally controlling documents.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Record final-arrangement preferences
+          details: Discuss the plan with loved ones and document providers, contracts, funding, and the location of controlling paperwork.
+          priority: medium
+      - id: handoff.survival-package
+        prompt: Does a trusted person know where the current offline survival package is and how to open it?
+        help_text: The package should remain usable without the running application or the person who administers it.
+        sensitivity: highly_sensitive
+        task:
+          when_values: [not_started, not_sure]
+          title: Create and test an offline survival package
+          details: Export audience-specific PDFs and the encrypted full archive, separate the recovery key, and have a trusted person test access.
+          priority: critical
+      - id: handoff.review
+        prompt: Have you scheduled an annual review and reviews after major life events?
+        help_text: Marriage, divorce, birth, death, moving, employment changes, illness, and major asset changes should trigger review.
+        sensitivity: standard
+        task:
+          when_values: [not_started, not_sure]
+          title: Schedule recurring readiness reviews
+          details: Add an annual review and define which major life events should trigger an immediate review.
+          priority: medium

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-heading">
+  <p class="eyebrow">Personal preferences</p>
+  <h1>Appearance settings</h1>
+  <p class="lede">
+    These settings are stored on this device in the private-session prototype. When user
+    accounts are enabled, the same values will sync to each user's preference record.
+  </p>
+</section>
+
+<section class="settings-panel" aria-labelledby="theme-heading">
+  <h2 id="theme-heading">Theme</h2>
+  <fieldset>
+    <legend>Display mode</legend>
+    <div class="choice-grid compact">
+      {% for mode in theme_modes %}
+      <label class="choice">
+        <input type="radio" name="theme-mode" value="{{ mode }}">
+        <span>{{ mode | title }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Color scheme</legend>
+    <div class="scheme-grid">
+      {% for scheme in color_schemes %}
+      <label class="scheme-choice" data-preview-scheme="{{ scheme }}">
+        <input type="radio" name="color-scheme" value="{{ scheme }}">
+        <span class="scheme-swatch" aria-hidden="true"></span>
+        <span>{{ scheme | title }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </fieldset>
+
+  <p id="settings-status" class="status-message" role="status">Changes save automatically.</p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='/js/settings.js') }}"></script>
+{% endblock %}
+

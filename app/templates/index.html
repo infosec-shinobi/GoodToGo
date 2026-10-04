@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">A practical act of care</p>
+  <h1>Make the hard things easier for the people you love.</h1>
+  <p class="lede">
+    Organize decisions, documents, accounts, household knowledge, and digital-life
+    instructions before anyone has to search for them during a crisis.
+  </p>
+  <div class="button-row">
+    <a class="button primary" href="/private">Start a private session</a>
+    <a class="button secondary" href="#how-it-works">See how it works</a>
+  </div>
+</section>
+
+<section class="privacy-callout" aria-labelledby="privacy-title">
+  <div>
+    <p class="eyebrow">Private-session promise</p>
+    <h2 id="privacy-title">Your workbook answers stay in this browser.</h2>
+  </div>
+  <p>
+    This starter does not submit private-session answers to the server. Device saving is
+    opt-in, and you can print a personalized take-home list without creating an account.
+  </p>
+</section>
+
+<section id="how-it-works" class="content-section">
+  <div class="section-heading">
+    <p class="eyebrow">Current content pack {{ catalog.workbook.version }}</p>
+    <h2>One guided path, manageable steps</h2>
+    <p>{{ question_count }} starter questions across {{ catalog.workbook.sections | length }} readiness areas.</p>
+  </div>
+  <div class="card-grid">
+    {% for section in catalog.workbook.sections %}
+    <article class="card">
+      <p class="step-number">{{ "%02d" | format(loop.index) }}</p>
+      <h3>{{ section.title }}</h3>
+      <p>{{ section.description }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="content-section split-panel">
+  <div>
+    <p class="eyebrow">Designed for continuity</p>
+    <h2>The application is not the recovery plan.</h2>
+  </div>
+  <div>
+    <p>
+      Completed plans will eventually export into audience-specific PDFs and an encrypted,
+      offline survival package. A trusted person should be able to use it without running
+      this application or understanding the server that hosts it.
+    </p>
+  </div>
+</section>
+{% endblock %}
+

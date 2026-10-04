@@ -1,0 +1,102 @@
+version: "2026.09"
+last_reviewed: "2026-09-11"
+resources:
+  - id: google-inactive-account-manager
+    provider: Google
+    title: Set up Inactive Account Manager
+    url: https://support.google.com/accounts/answer/3036546
+    purpose: prepare
+    jurisdiction: global
+    last_verified: "2026-09-11"
+    summary: Choose trusted contacts, the data they may receive, and what Google should do after sustained inactivity.
+
+  - id: google-deceased-account-request
+    provider: Google
+    title: Submit a request regarding a deceased user's account
+    url: https://support.google.com/accounts/troubleshooter/6357590
+    purpose: survivor
+    jurisdiction: global
+    last_verified: "2026-09-11"
+    summary: Official process for closing an account, requesting funds, or requesting eligible account data.
+
+  - id: apple-add-legacy-contact
+    provider: Apple
+    title: Add a Legacy Contact for an Apple Account
+    url: https://support.apple.com/en-us/102631
+    purpose: prepare
+    jurisdiction: global
+    last_verified: "2026-09-11"
+    summary: Add one or more Legacy Contacts and securely share or print the required access key.
+
+  - id: bitwarden-emergency-access
+    provider: Bitwarden
+    title: Configure Emergency Access
+    url: https://bitwarden.com/help/emergency-access/
+    purpose: prepare
+    jurisdiction: global
+    last_verified: "2026-09-11"
+    summary: Appoint trusted contacts with view or takeover access after approval or a configured waiting period.
+
+  - id: onepassword-emergency-kit
+    provider: 1Password
+    title: Prepare a 1Password Emergency Kit
+    url: https://support.1password.com/emergency-kit/
+    purpose: prepare
+    jurisdiction: global
+    last_verified: "2026-09-11"
+    summary: Download, prepare, and safely store the account recovery kit.
+
+  - id: onepassword-family-recovery
+    provider: 1Password
+    title: Configure family account recovery
+    url: https://support.1password.com/recovery/
+    purpose: prepare
+    jurisdiction: global
+    last_verified: "2026-09-11"
+    summary: Ensure at least two family organizers can recover another family member's account.
+
+  - id: facebook-legacy-contact
+    provider: Facebook
+    title: Manage a Facebook Legacy Contact
+    url: https://www.facebook.com/help/1568013990080948
+    purpose: prepare
+    jurisdiction: global
+    last_verified: "2026-09-11"
+    summary: Choose who can manage limited aspects of a memorialized Facebook account.
+
+  - id: github-deceased-user-policy
+    provider: GitHub
+    title: GitHub Deceased User Policy and account successor
+    url: https://docs.github.com/en/site-policy/other-site-policies/github-deceased-user-policy
+    purpose: prepare
+    jurisdiction: global
+    last_verified: "2026-09-11"
+    summary: Designate an account successor and document what should happen to repositories and billing.
+
+  - id: x-deceased-account
+    provider: X
+    title: Contact X about a deceased family member's account
+    url: https://help.x.com/en/rules-and-policies/contact-x-about-a-deceased-family-members-account
+    purpose: survivor
+    jurisdiction: global
+    last_verified: "2026-09-11"
+    summary: Official removal process for an authorized estate representative or verified immediate family member.
+
+  - id: paypal-deceased-account
+    provider: PayPal
+    title: Close the PayPal account of a deceased relative
+    url: https://www.paypal.com/us/cshelp/article/how-do-i-close-the-paypal-account-of-a-deceased-relative-help220
+    purpose: survivor
+    jurisdiction: US
+    last_verified: "2026-09-11"
+    summary: Documents and steps an authorized executor or administrator needs to close an account and handle remaining funds.
+
+  - id: ohio-digital-assets-law
+    provider: Ohio Laws
+    title: Ohio Uniform Fiduciary Access to Digital Assets Act
+    url: https://codes.ohio.gov/ohio-revised-code/chapter-2137
+    purpose: reference
+    jurisdiction: US-OH
+    last_verified: "2026-09-11"
+    summary: Ohio rules for online directions, fiduciary authority, disclosure, and termination of digital accounts.
+

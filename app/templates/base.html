@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" data-theme="system" data-scheme="ocean">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <script src="{{ url_for('static', path='/js/theme-init.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/app.css') }}">
+    <title>{{ page_title }} | GoodToGo</title>
+  </head>
+  <body>
+    <header class="site-header no-print">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">FR</span>
+        <span>GoodToGo</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="/private">Private workbook</a>
+        <a href="/settings">Settings</a>
+      </nav>
+    </header>
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer no-print">
+      <p>Educational organizer only. Confirm legal, tax, financial, and medical decisions with qualified professionals.</p>
+    </footer>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
+

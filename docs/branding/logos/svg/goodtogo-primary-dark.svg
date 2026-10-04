@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520">
+<rect width="1200" height="520" fill="#102D4F"/>
+<g transform="translate(80,40)">
+  <circle cx="220" cy="120" r="72" fill="#4C8FD6" opacity=".82"/>
+  <g stroke="#4C8FD6" stroke-width="16" stroke-linecap="round">
+    <line x1="220" y1="18" x2="220" y2="-18"/><line x1="125" y1="45" x2="98" y2="18"/>
+    <line x1="315" y1="45" x2="342" y2="18"/><line x1="92" y1="120" x2="54" y2="120"/>
+    <line x1="348" y1="120" x2="386" y2="120"/>
+  </g>
+  <path d="M10 175 Q220 125 430 175" fill="none" stroke="#4C8FD6" stroke-width="12" stroke-linecap="round"/>
+  <path d="M70 390 C130 300 160 250 215 205 C255 173 295 167 338 176
+           C285 195 265 220 260 247 C255 280 305 315 355 390 Z" fill="#102D4F"/>
+  <path d="M205 390 C225 326 225 284 248 250 C265 226 286 207 322 187
+           C287 214 278 237 284 260 C292 292 324 324 345 390 Z" fill="#FFFFFF"/>
+</g><text x="545" y="300" font-family="Arial,Helvetica,sans-serif" font-size="118" font-weight="700" fill="#FFFFFF">GoodTo<tspan fill="#4C8FD6">Go</tspan></text><text x="552" y="365" font-family="Arial,Helvetica,sans-serif" font-size="38" fill="#DCEAF7">Get your life in order.</text><text x="552" y="415" font-family="Arial,Helvetica,sans-serif" font-size="38" fill="#DCEAF7">For the people you love.</text></svg>

@@ -1,0 +1,11 @@
+:root {
+  --gtg-navy: #102D4F;
+  --gtg-blue: #4C8FD6;
+  --gtg-pale-blue: #DCEAF7;
+  --gtg-slate: #566574;
+  --gtg-ink: #1D2935;
+  --gtg-off-white: #F8FAFC;
+  --gtg-white: #FFFFFF;
+  --gtg-font-heading: "Manrope", "Inter", system-ui, sans-serif;
+  --gtg-font-body: "Inter", system-ui, sans-serif;
+}
