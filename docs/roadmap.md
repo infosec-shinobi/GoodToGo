@@ -65,8 +65,9 @@ Exit criteria:
 ## MVP 1: Private “death party” workbook
 
 Status: In progress; starter implementation exists for the private workbook,
-section navigation, time estimates, browser-local answers, generated take-home tasks,
-public catalog API, clear-session, theme controls, and browser print views.
+section navigation, time estimates, safe notes fields, browser-local answers,
+generated take-home tasks, public catalog API, clear-session, theme controls, and
+browser print views.
 
 Goal: Let a family member complete a useful guided session without an account or
 server-side answer retention.
@@ -74,7 +75,7 @@ server-side answer retention.
 ### 1.1 Workbook experience
 
 - Done: Add section navigation and time estimates
-- Add safe notes fields where appropriate
+- Done: Add safe notes fields where appropriate
 - Add conditional applicability questions
 - Add “needs professional help” to generated tasks
 - Support save-off by default and explicit local-device save

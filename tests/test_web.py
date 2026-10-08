@@ -40,6 +40,8 @@ def test_private_workbook_has_no_submission_target():
     assert 'id="private-workbook"' in response.text
     assert 'aria-label="Workbook sections"' in response.text
     assert "Estimated time:" in response.text
+    assert "Safe note, location, or next step" in response.text
+    assert "__note" in response.text
     assert 'id="print-workbook"' in response.text
     assert 'id="print-tasks"' in response.text
     assert "method=" not in response.text
@@ -52,3 +54,5 @@ def test_private_javascript_only_fetches_the_public_catalog():
     assert script.count("fetch(") == 1
     assert 'fetch("/api/v1/catalog"' in script
     assert "localStorage" in script
+    assert "getReadinessAnswers" in script
+    assert "getFormState" in script

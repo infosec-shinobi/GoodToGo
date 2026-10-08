@@ -9,14 +9,33 @@
   const progressBar = document.getElementById("progress-bar");
   let catalog;
 
-  const getAnswers = () => Object.fromEntries(new FormData(form).entries());
+  const getFormState = () => {
+    const state = {};
+    form.querySelectorAll('input[type="radio"]:checked, textarea').forEach((field) => {
+      if (field.value) state[field.name] = field.value;
+    });
+    return state;
+  };
+
+  const getReadinessAnswers = () => {
+    const answers = {};
+    form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+      answers[input.name] = input.value;
+    });
+    return answers;
+  };
 
   const loadSavedAnswers = () => {
     const saved = localStorage.getItem(storageKey);
     if (!saved) return;
     try {
-      const answers = JSON.parse(saved);
-      Object.entries(answers).forEach(([name, value]) => {
+      const state = JSON.parse(saved);
+      Object.entries(state).forEach(([name, value]) => {
+        const textarea = form.querySelector(`textarea[name="${CSS.escape(name)}"]`);
+        if (textarea) {
+          textarea.value = value;
+          return;
+        }
         const input = form.querySelector(`input[name="${CSS.escape(name)}"][value="${CSS.escape(value)}"]`);
         if (input) input.checked = true;
       });
@@ -26,8 +45,8 @@
     }
   };
 
-  const saveIfEnabled = (answers) => {
-    if (saveToggle.checked) localStorage.setItem(storageKey, JSON.stringify(answers));
+  const saveIfEnabled = () => {
+    if (saveToggle.checked) localStorage.setItem(storageKey, JSON.stringify(getFormState()));
   };
 
   const updateProgress = (answers) => {
@@ -94,16 +113,17 @@
   };
 
   const refresh = () => {
-    const answers = getAnswers();
-    saveIfEnabled(answers);
+    const answers = getReadinessAnswers();
+    saveIfEnabled();
     updateProgress(answers);
     renderTasks(answers);
   };
 
   form.addEventListener("change", refresh);
+  form.addEventListener("input", refresh);
   saveToggle.addEventListener("change", () => {
     if (saveToggle.checked) {
-      localStorage.setItem(storageKey, JSON.stringify(getAnswers()));
+      localStorage.setItem(storageKey, JSON.stringify(getFormState()));
     } else {
       localStorage.removeItem(storageKey);
     }
@@ -139,6 +159,6 @@
     .catch(() => {
       summary.textContent = "The take-home task catalog could not be loaded. Your answers remain in this browser.";
       loadSavedAnswers();
-      updateProgress(getAnswers());
+      updateProgress(getReadinessAnswers());
     });
 })();

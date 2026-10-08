@@ -54,6 +54,10 @@
           </label>
           {% endfor %}
         </div>
+        <label class="safe-note">
+          <span>Safe note, location, or next step (optional)</span>
+          <textarea name="{{ question.id }}__note" rows="3" placeholder="Example: signed original is in the home safe; ask Morgan to confirm willingness. Do not enter passwords, recovery codes, account passcodes, or private keys."></textarea>
+        </label>
       </fieldset>
       {% endfor %}
     </div>
