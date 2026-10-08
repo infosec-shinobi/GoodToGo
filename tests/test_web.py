@@ -38,10 +38,20 @@ def test_private_workbook_has_no_submission_target():
     response = client.get("/private")
 
     assert 'id="private-workbook"' in response.text
+    assert 'id="device-save" type="checkbox"' in response.text
+    assert 'id="device-save-status"' in response.text
+    assert "Device saving is off" in response.text
+    assert 'id="inactivity-status"' in response.text
+    assert "30 minutes of inactivity" in response.text
+    assert "Closing this tab also loses unsaved answers" in response.text
     assert 'aria-label="Workbook sections"' in response.text
     assert "Estimated time:" in response.text
     assert "Safe note, location, or next step" in response.text
     assert "__note" in response.text
+    assert "professional_help" in response.text
+    assert "Need professional help" in response.text
+    assert 'data-response-type="applicability"' in response.text
+    assert 'data-applies-question="dependents.exists"' in response.text
     assert 'id="print-workbook"' in response.text
     assert 'id="print-tasks"' in response.text
     assert "method=" not in response.text
@@ -54,5 +64,28 @@ def test_private_javascript_only_fetches_the_public_catalog():
     assert script.count("fetch(") == 1
     assert 'fetch("/api/v1/catalog"' in script
     assert "localStorage" in script
+    assert "saveToggle.checked" in script
+    assert "updateSaveStatus" in script
+    assert "Device saving is off" in script
+    assert "idleWarningMs" in script
+    assert "idleClearMs" in script
+    assert "clearSession" in script
+    assert "30 minutes of inactivity" in script
+    assert "applyConditionals" in script
+    assert "needsProfessionalHelp" in script
+    assert "professional help flagged" in script
     assert "getReadinessAnswers" in script
     assert "getFormState" in script
+
+
+def test_private_workbook_has_responsive_css_hooks():
+    stylesheet = (PROJECT_ROOT / "app/static/css/app.css").read_text(encoding="utf-8")
+
+    assert "@media (max-width: 760px)" in stylesheet
+    assert ".workbook-toolbar" in stylesheet
+    assert ".choice-grid" in stylesheet
+    assert "grid-template-columns: 1fr 1fr" in stylesheet
+    assert "scroll-margin-top" in stylesheet
+    assert "@media print" in stylesheet
+    assert ".print-take-home-only .workbook" in stylesheet
+    assert "focus-visible" in stylesheet

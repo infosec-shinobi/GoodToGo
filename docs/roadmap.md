@@ -65,7 +65,8 @@ Exit criteria:
 ## MVP 1: Private “death party” workbook
 
 Status: In progress; starter implementation exists for the private workbook,
-section navigation, time estimates, safe notes fields, browser-local answers,
+section navigation, time estimates, safe notes fields, conditional applicability,
+professional-help task flags, browser-local answers, inactivity auto-clear,
 generated take-home tasks, public catalog API, clear-session, theme controls, and
 browser print views.
 
@@ -76,11 +77,11 @@ server-side answer retention.
 
 - Done: Add section navigation and time estimates
 - Done: Add safe notes fields where appropriate
-- Add conditional applicability questions
-- Add “needs professional help” to generated tasks
-- Support save-off by default and explicit local-device save
-- Add clear inactivity and data-loss behavior
-- Add responsive Android and desktop testing
+- Done: Add conditional applicability questions
+- Done: Add “needs professional help” to generated tasks
+- Done: Support save-off by default and explicit local-device save
+- Done: Add clear inactivity and data-loss behavior
+- Done: Add responsive Android and desktop testing
 
 ### 1.2 Take-home list
 

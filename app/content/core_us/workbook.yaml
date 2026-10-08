@@ -1,5 +1,5 @@
 id: core-us-oh
-version: "0.1.0"
+version: "0.1.2"
 title: GoodToGo Workbook
 jurisdiction: US-OH
 last_reviewed: "2026-09-11"
@@ -28,10 +28,18 @@ sections:
           title: Choose and brief a health care agent
           details: Discuss your values and complete the appropriate health care power of attorney for your state.
           priority: critical
+      - id: dependents.exists
+        prompt: Do minor children, adult dependents, pets, or another person rely on you for care?
+        help_text: This determines whether caregiver and guardian planning questions apply to this session.
+        response_type: applicability
+        sensitivity: highly_sensitive
       - id: roles.guardian
         prompt: If anyone depends on you, have you nominated caregivers or guardians and confirmed their willingness?
         help_text: Consider minor children, adult dependents, and pets. Legal guardianship nominations should be reviewed professionally.
         sensitivity: highly_sensitive
+        applies_when:
+          question_id: dependents.exists
+          values: ["yes", "not_sure"]
         task:
           when_values: [not_started, not_sure]
           title: Create a dependent and pet care plan

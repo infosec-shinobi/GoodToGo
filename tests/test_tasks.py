@@ -34,3 +34,18 @@ def test_unready_answers_create_priority_sorted_tasks_with_guides():
     assert any(task.resources for task in tasks)
     assert all(resource.url.startswith("https://") for task in tasks for resource in task.resources)
 
+
+def test_professional_help_answers_create_flagged_tasks():
+    catalog = load_catalog()
+    question_with_task = next(
+        question
+        for section in catalog.workbook.sections
+        for question in section.questions
+        if question.task
+    )
+
+    tasks = build_take_home_tasks(catalog, {question_with_task.id: "professional_help"})
+
+    assert len(tasks) == 1
+    assert tasks[0].question_id == question_with_task.id
+    assert tasks[0].needs_professional_help is True

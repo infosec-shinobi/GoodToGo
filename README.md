@@ -98,6 +98,7 @@ Start with:
 2. [Product requirements](docs/product-requirements.md)
 3. [Roadmap](docs/roadmap.md)
 4. [Agent build guide](docs/agent-build-guide.md)
+5. [Responsive QA checklist](docs/responsive-qa.md)
 
 ## Safety boundary
 

@@ -7,11 +7,17 @@
   const answeredCount = document.getElementById("answered-count");
   const questionCount = document.getElementById("question-count");
   const progressBar = document.getElementById("progress-bar");
+  const saveStatus = document.getElementById("device-save-status");
+  const inactivityStatus = document.getElementById("inactivity-status");
+  const idleWarningMs = 25 * 60 * 1000;
+  const idleClearMs = 30 * 60 * 1000;
+  let idleWarningTimer;
+  let idleClearTimer;
   let catalog;
 
   const getFormState = () => {
     const state = {};
-    form.querySelectorAll('input[type="radio"]:checked, textarea').forEach((field) => {
+    form.querySelectorAll('input[type="radio"]:checked:not(:disabled), textarea:not(:disabled)').forEach((field) => {
       if (field.value) state[field.name] = field.value;
     });
     return state;
@@ -19,10 +25,23 @@
 
   const getReadinessAnswers = () => {
     const answers = {};
-    form.querySelectorAll('input[type="radio"]:checked').forEach((input) => {
+    form.querySelectorAll('input[type="radio"]:checked:not(:disabled)').forEach((input) => {
       answers[input.name] = input.value;
     });
     return answers;
+  };
+
+  const applyConditionals = () => {
+    form.querySelectorAll(".question-card[data-applies-question]").forEach((card) => {
+      const questionId = card.dataset.appliesQuestion;
+      const appliesValues = (card.dataset.appliesValues || "").split(",");
+      const selected = form.querySelector(`input[name="${CSS.escape(questionId)}"]:checked`);
+      const isApplicable = selected && appliesValues.includes(selected.value);
+      card.hidden = !isApplicable;
+      card.querySelectorAll("input, textarea").forEach((field) => {
+        field.disabled = !isApplicable;
+      });
+    });
   };
 
   const loadSavedAnswers = () => {
@@ -49,9 +68,43 @@
     if (saveToggle.checked) localStorage.setItem(storageKey, JSON.stringify(getFormState()));
   };
 
+  const updateSaveStatus = () => {
+    saveStatus.textContent = saveToggle.checked
+      ? "Device saving is on. Answers are remembered only in this browser."
+      : "Device saving is off. Answers will be lost when this tab is closed.";
+  };
+
+  const clearSession = (message) => {
+    form.reset();
+    saveToggle.checked = false;
+    localStorage.removeItem(storageKey);
+    updateSaveStatus();
+    inactivityStatus.textContent = message;
+    refresh();
+  };
+
+  const resetIdleTimers = () => {
+    window.clearTimeout(idleWarningTimer);
+    window.clearTimeout(idleClearTimer);
+    inactivityStatus.textContent = saveToggle.checked
+      ? "Inactivity auto-clear is paused while device saving is on."
+      : "Inactivity auto-clear is on for unsaved sessions.";
+
+    if (saveToggle.checked) return;
+
+    idleWarningTimer = window.setTimeout(() => {
+      inactivityStatus.textContent = "Unsaved answers will clear after 5 more minutes of inactivity.";
+    }, idleWarningMs);
+    idleClearTimer = window.setTimeout(() => {
+      clearSession("Unsaved answers were cleared after 30 minutes of inactivity.");
+    }, idleClearMs);
+  };
+
   const updateProgress = (answers) => {
-    const total = form.querySelectorAll(".question-card").length;
-    const answered = Object.keys(answers).length;
+    const visibleCards = form.querySelectorAll(".question-card:not([hidden])");
+    const visibleQuestionIds = new Set([...visibleCards].map((card) => card.dataset.questionId));
+    const answered = Object.keys(answers).filter((questionId) => visibleQuestionIds.has(questionId)).length;
+    const total = visibleCards.length;
     questionCount.textContent = String(total);
     answeredCount.textContent = String(answered);
     progressBar.style.width = `${total ? (answered / total) * 100 : 0}%`;
@@ -84,8 +137,14 @@
 
     catalog.workbook.sections.forEach((section) => {
       section.questions.forEach((question) => {
-        if (!question.task || !question.task.when_values.includes(answers[question.id])) return;
-        tasks.push({ ...question.task, questionId: question.id, section: section.title });
+        const answer = answers[question.id];
+        if (!question.task || (!question.task.when_values.includes(answer) && answer !== "professional_help")) return;
+        tasks.push({
+          ...question.task,
+          needsProfessionalHelp: answer === "professional_help",
+          questionId: question.id,
+          section: section.title,
+        });
       });
     });
     tasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority] || a.title.localeCompare(b.title));
@@ -98,7 +157,7 @@
       heading.textContent = task.title;
       const meta = document.createElement("p");
       meta.className = `priority ${task.priority}`;
-      meta.textContent = `${task.priority} priority · ${task.section}`;
+      meta.textContent = `${task.priority} priority · ${task.section}${task.needsProfessionalHelp ? " · professional help flagged" : ""}`;
       const details = document.createElement("p");
       details.textContent = task.details;
       item.append(meta, heading, details);
@@ -113,6 +172,7 @@
   };
 
   const refresh = () => {
+    applyConditionals();
     const answers = getReadinessAnswers();
     saveIfEnabled();
     updateProgress(answers);
@@ -127,13 +187,17 @@
     } else {
       localStorage.removeItem(storageKey);
     }
+    updateSaveStatus();
+    resetIdleTimers();
   });
 
   document.getElementById("clear-answers").addEventListener("click", () => {
-    form.reset();
-    saveToggle.checked = false;
-    localStorage.removeItem(storageKey);
-    refresh();
+    clearSession("Session cleared. Inactivity auto-clear is on for unsaved sessions.");
+    resetIdleTimers();
+  });
+
+  ["pointerdown", "keydown", "input", "change"].forEach((eventName) => {
+    document.addEventListener(eventName, resetIdleTimers, { passive: true });
   });
 
   document.getElementById("print-tasks").addEventListener("click", () => {
@@ -154,11 +218,15 @@
     .then((value) => {
       catalog = value;
       loadSavedAnswers();
+      updateSaveStatus();
+      resetIdleTimers();
       refresh();
     })
     .catch(() => {
       summary.textContent = "The take-home task catalog could not be loaded. Your answers remain in this browser.";
       loadSavedAnswers();
+      updateSaveStatus();
+      resetIdleTimers();
       updateProgress(getReadinessAnswers());
     });
 })();

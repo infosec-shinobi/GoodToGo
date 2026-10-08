@@ -9,6 +9,11 @@
     <strong>No passwords or recovery codes.</strong>
     Record where credentials are secured, not the credentials themselves.
   </div>
+  <div class="notice privacy-notice">
+    <strong>Save is off by default.</strong>
+    Unsaved private-session answers stay in this tab and clear automatically after
+    30 minutes of inactivity. Closing this tab also loses unsaved answers.
+  </div>
 </section>
 
 <section class="workbook-toolbar no-print" aria-label="Workbook controls">
@@ -20,6 +25,12 @@
     <input id="device-save" type="checkbox">
     <span>Remember answers on this device</span>
   </label>
+  <p id="device-save-status" class="save-status" aria-live="polite">
+    Device saving is off. Answers will be lost when this tab is closed.
+  </p>
+  <p id="inactivity-status" class="save-status" aria-live="polite">
+    Inactivity auto-clear is on for unsaved sessions.
+  </p>
   <button id="print-workbook" class="button secondary" type="button">Print / save full workbook</button>
 </section>
 
@@ -43,11 +54,25 @@
     </header>
     <div class="question-list">
       {% for question in section.questions %}
-      <fieldset class="question-card" data-question-id="{{ question.id }}">
+      <fieldset
+        class="question-card"
+        data-question-id="{{ question.id }}"
+        data-response-type="{{ question.response_type }}"
+        {% if question.applies_when %}
+        data-applies-question="{{ question.applies_when.question_id }}"
+        data-applies-values="{{ question.applies_when.values | join(',') }}"
+        hidden
+        {% endif %}
+      >
         <legend>{{ question.prompt }}</legend>
         <p class="help-text">{{ question.help_text }}</p>
         <div class="choice-grid">
-          {% for value, label in [('complete', 'Ready'), ('in_progress', 'In progress'), ('not_started', 'Not started'), ('not_sure', 'Not sure'), ('not_applicable', 'Not applicable')] %}
+          {% if question.response_type == 'applicability' %}
+          {% set choices = [('yes', 'Yes'), ('no', 'No'), ('not_sure', 'Not sure')] %}
+          {% else %}
+          {% set choices = [('complete', 'Ready'), ('in_progress', 'In progress'), ('not_started', 'Not started'), ('not_sure', 'Not sure'), ('professional_help', 'Need professional help'), ('not_applicable', 'Not applicable')] %}
+          {% endif %}
+          {% for value, label in choices %}
           <label class="choice">
             <input type="radio" name="{{ question.id }}" value="{{ value }}">
             <span>{{ label }}</span>

@@ -15,6 +15,7 @@ class TakeHomeTask(BaseModel):
     title: str
     details: str
     priority: str
+    needs_professional_help: bool = False
     resources: list[TakeHomeResource]
 
 
@@ -28,7 +29,10 @@ def build_take_home_tasks(
     for section in catalog.workbook.sections:
         for question in section.questions:
             definition = question.task
-            if not definition or answers.get(question.id) not in definition.when_values:
+            answer = answers.get(question.id)
+            if not definition or (
+                answer not in definition.when_values and answer != "professional_help"
+            ):
                 continue
             resources = [
                 TakeHomeResource(
@@ -45,10 +49,10 @@ def build_take_home_tasks(
                     title=definition.title,
                     details=definition.details,
                     priority=definition.priority,
+                    needs_professional_help=answer == "professional_help",
                     resources=resources,
                 )
             )
 
     priority_order = {"critical": 0, "high": 1, "medium": 2, "low": 3}
     return sorted(tasks, key=lambda task: (priority_order[task.priority], task.title))
-

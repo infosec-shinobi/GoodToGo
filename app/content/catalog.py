@@ -25,13 +25,19 @@ class FollowUpTaskDefinition(BaseModel):
     resource_ids: list[str] = Field(default_factory=list)
 
 
+class ApplicabilityRule(BaseModel):
+    question_id: str
+    values: list[str] = Field(min_length=1)
+
+
 class Question(BaseModel):
     id: str
     prompt: str
     help_text: str
-    response_type: Literal["readiness"] = "readiness"
+    response_type: Literal["readiness", "applicability"] = "readiness"
     sensitivity: Literal["standard", "sensitive", "highly_sensitive"] = "sensitive"
     recommended_review_months: int = Field(default=12, ge=1, le=60)
+    applies_when: ApplicabilityRule | None = None
     task: FollowUpTaskDefinition | None = None
 
 
@@ -60,6 +66,15 @@ class WorkbookCatalog(BaseModel):
             raise ValueError("section IDs must be unique")
         if len(question_ids) != len(set(question_ids)):
             raise ValueError("question IDs must be unique")
+        question_id_set = set(question_ids)
+        missing_dependencies = [
+            question.applies_when.question_id
+            for section in self.sections
+            for question in section.questions
+            if question.applies_when and question.applies_when.question_id not in question_id_set
+        ]
+        if missing_dependencies:
+            raise ValueError(f"unknown applicability question IDs: {sorted(missing_dependencies)}")
         return self
 
 
