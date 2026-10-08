@@ -99,6 +99,8 @@ Start with:
 3. [Roadmap](docs/roadmap.md)
 4. [Agent build guide](docs/agent-build-guide.md)
 5. [Responsive QA checklist](docs/responsive-qa.md)
+6. [MVP 0 review record](docs/mvp0-review.md)
+7. [When to get professional guidance](docs/professional-guidance.md)
 
 ## Safety boundary
 

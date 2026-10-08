@@ -28,8 +28,7 @@ Status legend:
 
 ## MVP 0: Foundation and content model
 
-Status: Mostly complete; pending product, legal/content, authentication, encryption,
-and PDF-renderer decisions.
+Status: Complete for personal-project use; professional validation not claimed.
 
 Goal: Create a repository that agents can safely extend and a content model that can
 drive web and print outputs.
@@ -48,19 +47,18 @@ Included in this starter:
 
 Remaining tasks:
 
-- Review working product name
-- Validate initial content with an Ohio estate attorney
-- Validate medical content with an appropriate clinician or advance-care specialist
-- Decide authentication approach
-- Approve encryption ADR
-- Decide PDF renderer
+- Done: Review working product name; accepted as GoodToGo for current MVP work
+- Done: Legal and medical professional-guidance boundaries documented; see `docs/professional-guidance.md`
+- Done: Decide authentication approach; see ADR 0004
+- Done: Approve encryption ADR; see ADR 0005
+- Done: Decide PDF renderer; see ADR 0006
 
 Exit criteria:
 
-- Product boundary accepted
-- Content taxonomy accepted
-- No raw-secret fields
-- Initial threat model reviewed
+- Done: Product boundary accepted; see `docs/mvp0-review.md`
+- Done: Content taxonomy accepted for scaffold; see `docs/mvp0-review.md`
+- Done: No raw-secret fields; see ADR 0003 and `docs/mvp0-review.md`
+- Done: Initial threat model reviewed; see `docs/mvp0-review.md`
 
 ## MVP 1: Private “death party” workbook
 

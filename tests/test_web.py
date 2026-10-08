@@ -44,6 +44,8 @@ def test_private_workbook_has_no_submission_target():
     assert 'id="inactivity-status"' in response.text
     assert "30 minutes of inactivity" in response.text
     assert "Closing this tab also loses unsaved answers" in response.text
+    assert "Get professional guidance" in response.text
+    assert "wills, trusts, powers of attorney" in response.text
     assert 'aria-label="Workbook sections"' in response.text
     assert "Estimated time:" in response.text
     assert "Safe note, location, or next step" in response.text
@@ -89,3 +91,26 @@ def test_private_workbook_has_responsive_css_hooks():
     assert "@media print" in stylesheet
     assert ".print-take-home-only .workbook" in stylesheet
     assert "focus-visible" in stylesheet
+
+
+def test_mvp0_decisions_are_documented():
+    review = (PROJECT_ROOT / "docs/mvp0-review.md").read_text(encoding="utf-8")
+    roadmap = (PROJECT_ROOT / "docs/roadmap.md").read_text(encoding="utf-8")
+    guidance = (PROJECT_ROOT / "docs/professional-guidance.md").read_text(encoding="utf-8")
+
+    for adr in (
+        "0004-authentication-approach.md",
+        "0005-persistent-encryption.md",
+        "0006-pdf-rendering.md",
+    ):
+        assert (PROJECT_ROOT / "docs/adr" / adr).exists()
+
+    assert "Complete for personal-project use" in review
+    assert (
+        "Status: Complete for personal-project use; professional validation not claimed"
+        in roadmap
+    )
+    assert "Do not claim the content is legally reviewed" in review
+    assert "When To Get Professional Guidance" in guidance
+    assert "Legal Guidance" in guidance
+    assert "Medical Guidance" in guidance
