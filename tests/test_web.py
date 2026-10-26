@@ -76,6 +76,9 @@ def test_private_javascript_only_fetches_the_public_catalog():
     assert "applyConditionals" in script
     assert "needsProfessionalHelp" in script
     assert "professional help flagged" in script
+    assert "taskCustomizations" in script
+    assert "Include in take-home list" in script
+    assert "adjustable priority" in script
     assert "getReadinessAnswers" in script
     assert "getFormState" in script
 
@@ -90,6 +93,8 @@ def test_private_workbook_has_responsive_css_hooks():
     assert "scroll-margin-top" in stylesheet
     assert "@media print" in stylesheet
     assert ".print-take-home-only .workbook" in stylesheet
+    assert ".task-item.excluded" in stylesheet
+    assert ".task-controls" in stylesheet
     assert "focus-visible" in stylesheet
 
 

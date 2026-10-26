@@ -83,7 +83,7 @@ server-side answer retention.
 
 ### 1.2 Take-home list
 
-- Allow task selection and priority adjustment
+- Done: Allow task selection and priority adjustment
 - Add responsible person and target-date fields locally
 - Provide print view with notes space
 - Provide source appendix and link verification metadata

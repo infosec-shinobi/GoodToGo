@@ -13,6 +13,7 @@
   const idleClearMs = 30 * 60 * 1000;
   let idleWarningTimer;
   let idleClearTimer;
+  let taskCustomizations = {};
   let catalog;
 
   const getFormState = () => {
@@ -20,6 +21,7 @@
     form.querySelectorAll('input[type="radio"]:checked:not(:disabled), textarea:not(:disabled)').forEach((field) => {
       if (field.value) state[field.name] = field.value;
     });
+    state.__tasks = taskCustomizations;
     return state;
   };
 
@@ -49,7 +51,9 @@
     if (!saved) return;
     try {
       const state = JSON.parse(saved);
+      taskCustomizations = state.__tasks || {};
       Object.entries(state).forEach(([name, value]) => {
+        if (name === "__tasks") return;
         const textarea = form.querySelector(`textarea[name="${CSS.escape(name)}"]`);
         if (textarea) {
           textarea.value = value;
@@ -139,35 +143,69 @@
       section.questions.forEach((question) => {
         const answer = answers[question.id];
         if (!question.task || (!question.task.when_values.includes(answer) && answer !== "professional_help")) return;
+        const customization = taskCustomizations[question.id] || {};
         tasks.push({
           ...question.task,
+          included: customization.included !== false,
           needsProfessionalHelp: answer === "professional_help",
+          adjustedPriority: customization.priority || question.task.priority,
           questionId: question.id,
           section: section.title,
         });
       });
     });
-    tasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority] || a.title.localeCompare(b.title));
+    tasks.sort((a, b) => {
+      if (a.included !== b.included) return a.included ? -1 : 1;
+      return priorityOrder[a.adjustedPriority] - priorityOrder[b.adjustedPriority] || a.title.localeCompare(b.title);
+    });
 
     taskList.replaceChildren();
     tasks.forEach((task) => {
       const item = document.createElement("li");
-      item.className = "task-item";
+      item.className = `task-item${task.included ? "" : " excluded"}`;
+      item.dataset.questionId = task.questionId;
+      const controls = document.createElement("div");
+      controls.className = "task-controls no-print";
+      const includeLabel = document.createElement("label");
+      includeLabel.className = "task-include";
+      const includeInput = document.createElement("input");
+      includeInput.type = "checkbox";
+      includeInput.checked = task.included;
+      includeInput.dataset.taskControl = "included";
+      const includeText = document.createElement("span");
+      includeText.textContent = "Include in take-home list";
+      includeLabel.append(includeInput, includeText);
+      const priorityLabel = document.createElement("label");
+      priorityLabel.className = "task-priority-select";
+      const priorityText = document.createElement("span");
+      priorityText.textContent = "Priority";
+      const prioritySelect = document.createElement("select");
+      prioritySelect.dataset.taskControl = "priority";
+      Object.keys(priorityOrder).forEach((priority) => {
+        const option = document.createElement("option");
+        option.value = priority;
+        option.textContent = priority;
+        option.selected = priority === task.adjustedPriority;
+        prioritySelect.append(option);
+      });
+      priorityLabel.append(priorityText, prioritySelect);
+      controls.append(includeLabel, priorityLabel);
       const heading = document.createElement("h3");
       heading.textContent = task.title;
       const meta = document.createElement("p");
-      meta.className = `priority ${task.priority}`;
-      meta.textContent = `${task.priority} priority · ${task.section}${task.needsProfessionalHelp ? " · professional help flagged" : ""}`;
+      meta.className = `priority ${task.adjustedPriority}`;
+      meta.textContent = `${task.adjustedPriority} priority · ${task.section}${task.needsProfessionalHelp ? " · professional help flagged" : ""}`;
       const details = document.createElement("p");
       details.textContent = task.details;
-      item.append(meta, heading, details);
+      item.append(controls, meta, heading, details);
       const resources = createResourceList(task.resource_ids, resourcesById);
       if (resources) item.append(resources);
       taskList.append(item);
     });
 
+    const includedTasks = tasks.filter((task) => task.included);
     summary.textContent = tasks.length
-      ? `${tasks.length} follow-up task${tasks.length === 1 ? "" : "s"}, ordered by priority.`
+      ? `${includedTasks.length} selected follow-up task${includedTasks.length === 1 ? "" : "s"}, ordered by adjustable priority.`
       : "No follow-up tasks yet. Items marked ready or not applicable will not appear here.";
   };
 
@@ -192,8 +230,23 @@
   });
 
   document.getElementById("clear-answers").addEventListener("click", () => {
+    taskCustomizations = {};
     clearSession("Session cleared. Inactivity auto-clear is on for unsaved sessions.");
     resetIdleTimers();
+  });
+
+  taskList.addEventListener("change", (event) => {
+    const control = event.target.closest("[data-task-control]");
+    const item = event.target.closest(".task-item");
+    if (!control || !item) return;
+
+    const questionId = item.dataset.questionId;
+    const customization = taskCustomizations[questionId] || {};
+    if (control.dataset.taskControl === "included") customization.included = control.checked;
+    if (control.dataset.taskControl === "priority") customization.priority = control.value;
+    taskCustomizations[questionId] = customization;
+    saveIfEnabled();
+    renderTasks(getReadinessAnswers());
   });
 
   ["pointerdown", "keydown", "input", "change"].forEach((eventName) => {
