@@ -352,6 +352,10 @@ for jurisdiction-specific professional review:
 - [MD Anderson: getting affairs in order](https://www.mdanderson.org/cancerwise/estate-planning-checklist--how-to-start--getting-your-affairs-in-order.h00-159774867.html)
 - [Death With Dignity: Life File and digital estate planning](https://deathwithdignity.org/resources/life-file-digital-estate-planning/)
 - [Death.io digital death checklist](https://www.death.io/wp-content/uploads/2019/06/My-Digital-Death-Checklist-from-Death.io-.pdf)
+- [potatoqualitee/eol-dr practical handoff checklist](https://github.com/potatoqualitee/eol-dr/blob/main/checklist.md)
+  (roadmap planning review: 2026-11-05; mixed jurisdictions, not authoritative guidance).
+  See the [topic-by-topic coverage map](eol-dr-coverage.md) for milestone assignments
+  and adaptations that exclude raw secrets and unauthorized account use.
 
 Provider-specific preparation and survivor links are maintained separately in
 `docs/digital-life-guide-catalog.md` and the versioned machine-readable catalog.

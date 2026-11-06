@@ -2,7 +2,7 @@
 
 Status: Active roadmap  
 Current milestone: MVP 1: Private “death party” workbook  
-Last status review: 2026-10-25
+Last status review: 2026-11-05
 Delivery style: Small vertical MVPs with a runnable application after each milestone
 
 Status legend:
@@ -25,6 +25,16 @@ Status legend:
 - Accessibility checked with keyboard and automated tooling
 - Release and rollback notes written
 - Deferred work listed explicitly
+
+## Reference checklist coverage
+
+The practical handoff ideas in
+[potatoqualitee/eol-dr's checklist](https://github.com/potatoqualitee/eol-dr/blob/main/checklist.md)
+were reviewed on 2026-11-05. The [coverage map](eol-dr-coverage.md) accounts for
+each topic, its delivery milestone, and safety adaptations. This is a planning
+reference, not professionally reviewed guidance or a claim of implemented coverage.
+The current MVP 1 boundary is unchanged; the detailed inventory and survivor workflows
+below are future work. New workbook questions require a versioned content-pack review.
 
 ## MVP 0: Foundation and content model
 
@@ -175,6 +185,58 @@ Goal: Move beyond checklist answers into a maintainable household inventory.
 - Last verified and next review dates
 - Location-only document support
 
+### 3.1 People, notifications, wishes, and care
+
+- Ordered notification contacts with preferred channels and a named notifier;
+  distinguish private family/friend notifications from later public announcements
+- Attorney, accountant, advisor, employer/benefits contacts, and trusted technical
+  helpers, with confirmation of willingness and separate authority/access evidence
+- Obituary inclusions/exclusions, preferred photos, service music/readings, and
+  disposition preferences, distinct from legally authoritative instructions
+- Pet veterinarian, food, medication, routines, current identification photos, and
+  agreed primary/backup caregivers
+
+### 3.2 Money coming in, money going out
+
+- Income and deposit inventory, including royalties, sponsorships, advertising,
+  creator/platform income, business receipts, pensions, and employer benefits
+- Account purpose, ownership, insurance/benefit contacts, and professional-review
+  status; retirement survivor benefits, dependent health-coverage continuity, and
+  savings intended for grandchildren or other beneficiaries
+- Payment dependency map: which account/card funds each bill, provider direct debits
+  versus bank-scheduled bill pay, amount/frequency, renewal/contract/notice dates,
+  and intended keep/cancel/transfer/review action
+- Streaming, app-store and family subscriptions, recurring shipments, and cloud,
+  hosting, domain, and CI/build-service costs, including spending urgency and helper
+  or provider support contacts; do not assume family subscriptions are transferable
+- Location of tax records and prior returns as discovery aids for missing income or
+  accounts, with accountant review rather than financial or tax recommendations
+
+### 3.3 Digital recovery, preservation, and disposition
+
+- Primary/recovery/forwarded email relationships and shared operational uses such as
+  delivery notices; phone/SIM/VoIP dependencies, authenticators, security-key and spare
+  locations, recovery-kit locators, and provider emergency/legacy setup status
+- Device retention and release prerequisites while recovery or data preservation is
+  still needed; no universal one-year retention rule or guarantee that authenticator
+  cloud restore recovers every account
+- Per-service preserve/export/memorialize/transfer/cancel/delete wishes, subject to
+  provider rules and legal authority; separately track personal profiles, business
+  pages, communities, and sentimental digital material
+- Cloud photos/documents and local/NAS backups: recognizable device/location labels,
+  safe access locators, backup/restore-test status, export destinations, and a
+  preservation check before closure, wiping, or disposal
+- Domains, registrar/DNS/hosting and repository dependencies: renewal funding,
+  intended recipient, support/helper contacts, and authorized transfer prerequisites
+- Hardware recipients and disposition prerequisites, including verified preservation,
+  media-appropriate sanitization, and vendor activation-lock/Find My release processes
+- Nontechnical network and smart-home runbooks: identify equipment, safe restart order
+  and wait times, outage checks, escalation contacts, Wi-Fi-change dependencies,
+  essential services to retain, and a simpler replacement or shutdown plan
+- Physical-security equipment, keys, and controlled-property contacts/locations;
+  record only authorized access arrangements and credential locators, never PINs,
+  combinations, security-question answers, or other recovery secrets
+
 Exit criteria:
 
 - Core records can be created, updated, reviewed, and exported
@@ -225,6 +287,12 @@ Goal: Create trustworthy handoff materials independent of the app.
 - Versioned JSON, original documents, and manifest
 - Temporary-file cleanup and audit
 - Annual trusted-person recovery exercise
+- A short, plain-language “start here” handoff: who to call first, what must keep
+  working, what not to cancel/wipe yet, and where authoritative originals are located
+- Separate nontechnical household instructions from a restricted technical appendix;
+  include billing dependencies, preservation-before-disposal checks, and source metadata
+- Printed-copy location, generated/reviewed dates, and a way to identify the current
+  offline copy without putting passwords or recovery secrets in the application export
 
 Exit criteria:
 
@@ -246,6 +314,9 @@ Goal: Keep plans current.
 - Backup and survival-package age warnings
 - Email notifications with no sensitive content
 - Dashboard focused on critical and stale items
+- Optional six-month print/recovery-kit review and reprint reminders, plus updates
+  after device, MFA, helper, billing, network, or provider changes; track kit location
+  and verification status, not kit secrets
 
 ## MVP 7: Survivor mode
 
@@ -261,6 +332,15 @@ Goal: Guide an authorized survivor through the practical aftermath.
 - Provider-specific digital account guides
 - Task assignment and evidence
 - Professional-review and legal-safety gate
+- Notify designated people privately in the recorded order before public announcements;
+  prepare a human checklist, not automatic messages or social-account posting
+- Preserve needed phones, email, photos, documents, and backups before account closure
+  or hardware disposal; hand off to the agreed technical helper when necessary
+- Review keep/cancel/transfer actions against payment dependencies and essential services,
+  with early attention to potentially costly cloud subscriptions
+- Contact employer, insurer, pension and health-benefit administrators and professionals;
+  verify survivor eligibility, coverage continuity, account restrictions, and lawful
+  access to funds rather than assuming joint accounts remain available
 
 This mode must never instruct someone to impersonate the deceased, use credentials
 without authority, distribute estate property, or pay debts personally without proper
@@ -276,6 +356,9 @@ Status: Not started.
 - Expiring redacted report links
 - Content signature and trusted-publisher model
 - Source update and retirement workflow
+- Jurisdiction-specific review of account freezes/access, survivor pensions and health
+  coverage, beneficiary savings, controlled-property handling, and provider transfer
+  rules; do not apply the reference checklist's European examples as US/Ohio guidance
 
 ## Future ideas
 
