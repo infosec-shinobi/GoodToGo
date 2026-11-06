@@ -57,6 +57,15 @@ async def private_workbook(request: Request):
     )
 
 
+@app.get("/private/take-home/blank", response_class=HTMLResponse)
+async def blank_take_home(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="blank_take_home.html",
+        context={"catalog": load_catalog(), "page_title": "Blank take-home list"},
+    )
+
+
 @app.get("/settings", response_class=HTMLResponse)
 async def settings_page(request: Request):
     return templates.TemplateResponse(
@@ -78,4 +87,3 @@ async def get_catalog():
 @app.get("/health")
 async def health():
     return {"status": "ok"}
-

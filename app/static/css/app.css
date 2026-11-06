@@ -667,8 +667,65 @@ h3 {
 .resource-list {
   margin-bottom: 0;
   padding-left: 1.2rem;
+  overflow-wrap: anywhere;
 }
 
+.task-assignment {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.task-assignment label {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+  font-weight: 700;
+}
+
+.task-assignment input {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.task-assignment input:focus-visible,
+.task-priority-select select:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.source-appendix {
+  margin-top: 2rem;
+}
+
+.source-appendix li {
+  margin-bottom: 1rem;
+  break-inside: avoid;
+}
+
+.source-appendix p {
+  color: var(--text-muted);
+}
+
+.notes-lines {
+  height: 4.5rem;
+  background: repeating-linear-gradient(transparent 0, transparent 1.4rem, var(--border) 1.4rem, var(--border) 1.5rem);
+}
+
+.paper-line {
+  display: inline-block;
+  width: 55%;
+  border-bottom: 1px solid var(--text-muted);
+}
+
+.print-only,
 .print-footer {
   display: none;
 }
@@ -752,7 +809,7 @@ h3 {
 }
 
 @media print {
-  :root {
+  :root:root:root:root {
     color-scheme: light;
     --bg: #fff;
     --surface: #fff;
@@ -794,6 +851,42 @@ h3 {
 
   .task-item {
     break-inside: avoid;
+    overflow-wrap: anywhere;
+    border-color: #777;
+  }
+
+  .task-list {
+    display: block;
+  }
+
+  .task-item + .task-item {
+    margin-top: 1rem;
+  }
+
+  .task-item::before {
+    background: #fff;
+    color: #111;
+    border: 1px solid #111;
+  }
+
+  .priority.critical {
+    color: #111;
+  }
+
+  .print-only {
+    display: block;
+  }
+
+  .notes-lines {
+    background: none;
+    border-bottom: 1px solid #777;
+    border-top: 1px solid #777;
+    margin-top: 1rem;
+    height: 3rem;
+  }
+
+  .source-appendix {
+    break-before: page;
   }
 
   .task-item.excluded {

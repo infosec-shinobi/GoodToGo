@@ -2,6 +2,7 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
+from app.content.catalog import load_catalog
 from app.main import app
 
 client = TestClient(app)
@@ -96,6 +97,39 @@ def test_private_workbook_has_responsive_css_hooks():
     assert ".task-item.excluded" in stylesheet
     assert ".task-controls" in stylesheet
     assert "focus-visible" in stylesheet
+
+
+def test_blank_take_home_is_standalone_public_content():
+    response = client.get("/private/take-home/blank")
+    assert response.status_code == 200
+    assert "Blank take-home list" in response.text
+    assert response.text.count('class="task-item blank-task"') == 6
+    assert "Responsible person:" in response.text
+    assert "Target date:" in response.text
+    assert "Safe notes / source reference:" in response.text
+    assert "Source appendix" in response.text
+    assert "not a live availability check" in response.text
+    assert "workbook.js" not in response.text
+    for resource in load_catalog().resources:
+        assert str(resource.url) in response.text
+        assert resource.last_verified in response.text
+    assert load_catalog().workbook.version in response.text
+    assert "Link last verified:" in response.text
+    assert "Last reviewed:" in response.text
+    assert "Jurisdiction:" in response.text
+
+
+def test_personalized_take_home_print_and_privacy_hooks():
+    page = client.get("/private").text
+    stylesheet = (PROJECT_ROOT / "app/static/css/app.css").read_text(encoding="utf-8")
+    assert 'href="/private/take-home/blank"' in page
+    assert 'id="source-appendix-list"' in page
+    assert "same opt-in device saving" in page
+    assert "printer queues" in page
+    assert ".task-assignment input:focus-visible" in stylesheet
+    assert ".notes-lines" in stylesheet
+    assert ".print-only" in stylesheet
+    assert ".source-appendix" in stylesheet
 
 
 def test_mvp0_decisions_are_documented():

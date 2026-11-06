@@ -112,6 +112,31 @@ Tasks should sort by:
 The private-session implementation generates this list locally in the browser. It does
 not send answers to the server.
 
+### MVP 1.2 implementation
+
+Participants can select tasks, adjust priority, and optionally enter a responsible
+person and target date. Assignments remain in tab memory unless device saving is
+enabled; they use the existing `__tasks` customization map in browser storage. Turning
+saving off removes the stored copy. Manual clear and unsaved-session inactivity clear
+remove assignments along with answers. Assignment does not confer legal authority or
+application access.
+
+The take-home print view includes assignment text (rather than potentially clipped
+input controls), a completion checkbox, and handwriting space for each selected task.
+Its deduplicated source appendix contains only sources referenced by selected tasks.
+It displays source URLs, source jurisdiction and catalog link-verification dates,
+plus workbook pack ID/version, jurisdiction, and last-reviewed date. Dates are not
+live link checks or claims of professional review.
+
+`/private/take-home/blank` is a standalone, server-rendered public handout with six
+empty task spaces and the full public source appendix. It needs no workbook script,
+does not read browser answer storage, and works with the browser's Print command.
+Opening it from a session leaves that session unchanged.
+
+Both outputs warn about printer/PDF retention and avoiding raw secrets. The resulting
+paper or PDF remains readable without the application; following source links still
+requires network access. See `docs/mvp1-2-review.md` for validation and limitations.
+
 ## Printable blank workbook
 
 The blank workbook is a standalone handout for nontechnical users. It should contain:
@@ -197,4 +222,3 @@ Before a completed sensitive export, show:
 - Identifier-redaction setting
 - Document attachments included or excluded
 - Storage and printer warning
-

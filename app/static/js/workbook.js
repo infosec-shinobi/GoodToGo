@@ -79,6 +79,7 @@
   };
 
   const clearSession = (message) => {
+    taskCustomizations = {};
     form.reset();
     saveToggle.checked = false;
     localStorage.removeItem(storageKey);
@@ -114,7 +115,7 @@
     progressBar.style.width = `${total ? (answered / total) * 100 : 0}%`;
   };
 
-  const createResourceList = (resourceIds, resourcesById) => {
+  const createResourceList = (resourceIds, resourcesById, appendix = false) => {
     if (!resourceIds.length) return null;
     const list = document.createElement("ul");
     list.className = "resource-list";
@@ -128,6 +129,11 @@
       link.rel = "noopener noreferrer";
       link.textContent = `${resource.provider}: ${resource.title}`;
       item.append(link);
+      if (appendix) {
+        const metadata = document.createElement("p");
+        metadata.textContent = `Jurisdiction: ${resource.jurisdiction} · Link last verified: ${resource.last_verified}`;
+        item.append(metadata);
+      }
       list.append(item);
     });
     return list;
@@ -200,10 +206,40 @@
       item.append(controls, meta, heading, details);
       const resources = createResourceList(task.resource_ids, resourcesById);
       if (resources) item.append(resources);
+      const assignment = document.createElement("div");
+      assignment.className = "task-assignment no-print";
+      const customization = taskCustomizations[task.questionId] || {};
+      [["responsiblePerson", "Responsible person (optional)", "text"], ["targetDate", "Target date (optional)", "date"]].forEach(([key, text, type]) => {
+        const label = document.createElement("label");
+        const caption = document.createElement("span");
+        caption.textContent = text;
+        const input = document.createElement("input");
+        input.type = type;
+        input.autocomplete = "off";
+        if (type === "text") input.maxLength = 120;
+        input.dataset.taskControl = key;
+        input.value = customization[key] || "";
+        label.append(caption, input);
+        assignment.append(label);
+      });
+      const printedAssignment = document.createElement("p");
+      printedAssignment.className = "task-assignment-print print-only";
+      printedAssignment.textContent = `Responsible person: ${customization.responsiblePerson || "________________"} · Target date: ${customization.targetDate || "________________"}`;
+      const notes = document.createElement("div");
+      notes.className = "task-notes print-only";
+      notes.textContent = "□ Completed · Safe notes / next step:";
+      const lines = document.createElement("div");
+      lines.className = "notes-lines";
+      notes.append(lines);
+      item.append(assignment, printedAssignment, notes);
       taskList.append(item);
     });
 
     const includedTasks = tasks.filter((task) => task.included);
+    const sourceIds = [...new Set(includedTasks.flatMap((task) => task.resource_ids))];
+    const appendix = document.getElementById("source-appendix-list");
+    const sources = createResourceList(sourceIds, resourcesById, true);
+    appendix.replaceChildren(...(sources ? [...sources.children] : []));
     summary.textContent = tasks.length
       ? `${includedTasks.length} selected follow-up task${includedTasks.length === 1 ? "" : "s"}, ordered by adjustable priority.`
       : "No follow-up tasks yet. Items marked ready or not applicable will not appear here.";
@@ -235,7 +271,7 @@
     resetIdleTimers();
   });
 
-  taskList.addEventListener("change", (event) => {
+  const updateTask = (event) => {
     const control = event.target.closest("[data-task-control]");
     const item = event.target.closest(".task-item");
     if (!control || !item) return;
@@ -244,10 +280,18 @@
     const customization = taskCustomizations[questionId] || {};
     if (control.dataset.taskControl === "included") customization.included = control.checked;
     if (control.dataset.taskControl === "priority") customization.priority = control.value;
+    if (control.dataset.taskControl === "responsiblePerson") customization.responsiblePerson = control.value;
+    if (control.dataset.taskControl === "targetDate") customization.targetDate = control.value;
     taskCustomizations[questionId] = customization;
     saveIfEnabled();
-    renderTasks(getReadinessAnswers());
-  });
+    if (["included", "priority"].includes(control.dataset.taskControl)) {
+      if (event.type === "change") renderTasks(getReadinessAnswers());
+    } else {
+      item.querySelector(".task-assignment-print").textContent = `Responsible person: ${customization.responsiblePerson || "________________"} · Target date: ${customization.targetDate || "________________"}`;
+    }
+  };
+  taskList.addEventListener("input", updateTask);
+  taskList.addEventListener("change", updateTask);
 
   ["pointerdown", "keydown", "input", "change"].forEach((eventName) => {
     document.addEventListener(eventName, resetIdleTimers, { passive: true });

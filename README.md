@@ -44,6 +44,8 @@ people start from clear instructions instead of guesswork.
 - Responsive private-session workbook prototype with section navigation and time estimates
 - Browser-local answer storage with no answer submission to the server
 - Generated take-home task list with official guidance links
+- Local task assignment and target dates, printable notes space, source appendix,
+  and a standalone blank take-home handout for paper participants
 - Browser print/save-to-PDF views for the full workbook and take-home list
 - Light, dark, and system themes with five color schemes
 - PostgreSQL-ready household, subject, record, task, document, and preference models

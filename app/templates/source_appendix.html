@@ -1,0 +1,15 @@
+<section class="source-appendix" aria-labelledby="source-appendix-title">
+  <h2 id="source-appendix-title">Source appendix</h2>
+  <p>Content pack {{ catalog.workbook.id }} {{ catalog.workbook.version }} · Jurisdiction: {{ catalog.workbook.jurisdiction }} · Last reviewed: {{ catalog.workbook.last_reviewed }}.</p>
+  <p>Link verification dates are catalog metadata, not a live availability check or professional review.</p>
+  <ul id="source-appendix-list" class="resource-list">
+    {% if blank_take_home %}
+    {% for resource in catalog.resources %}
+    <li>
+      <a href="{{ resource.url }}" target="_blank" rel="noopener noreferrer">{{ resource.provider }}: {{ resource.title }}</a>
+      <p>Jurisdiction: {{ resource.jurisdiction }} · Link last verified: {{ resource.last_verified }}</p>
+    </li>
+    {% endfor %}
+    {% endif %}
+  </ul>
+</section>

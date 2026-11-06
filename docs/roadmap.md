@@ -2,7 +2,7 @@
 
 Status: Active roadmap  
 Current milestone: MVP 1: Private “death party” workbook  
-Last status review: 2026-10-03  
+Last status review: 2026-10-25
 Delivery style: Small vertical MVPs with a runnable application after each milestone
 
 Status legend:
@@ -84,10 +84,14 @@ server-side answer retention.
 ### 1.2 Take-home list
 
 - Done: Allow task selection and priority adjustment
-- Add responsible person and target-date fields locally
-- Provide print view with notes space
-- Provide source appendix and link verification metadata
-- Add blank take-home list for paper participants
+- Done: Add responsible person and target-date fields locally
+- Done: Provide print view with notes space
+- Done: Provide source appendix and link verification metadata
+- Done: Add blank take-home list for paper participants
+
+Implementation and automated checks are complete. Physical print, real-browser
+keyboard/screen-reader, and automated accessibility validation remain release checks;
+see `docs/mvp1-2-review.md` for release, rollback, and deferred work.
 
 ### 1.3 Private resume and export
 

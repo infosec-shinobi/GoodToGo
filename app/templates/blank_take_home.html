@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="take-home" aria-labelledby="blank-title">
+  <header>
+    <p class="eyebrow">Paper participant handout</p>
+    <h1 id="blank-title">Blank take-home list</h1>
+    <p>Write one next step per task. Choose a priority, a responsible person, and a target date together. Naming a person here does not grant legal authority or application access.</p>
+    <p>No passwords, recovery codes, private keys, or safe combinations. Record only where credentials are secured.</p>
+    <p class="no-print">Use your browser’s Print command to print or save this blank handout as a PDF. It does not include any private-session answers.</p>
+    <a class="button secondary no-print" href="/private">Back to private workbook</a>
+  </header>
+  <ol class="task-list">
+    {% for number in range(6) %}
+    <li class="task-item blank-task">
+      <h3>Next step: <span class="paper-line"></span></h3>
+      <p>Priority: □ critical &nbsp; □ high &nbsp; □ medium &nbsp; □ low &nbsp; · &nbsp; □ completed</p>
+      <p>Responsible person: <span class="paper-line"></span></p>
+      <p>Target date: <span class="paper-line"></span></p>
+      <div class="task-notes">Safe notes / source reference:<div class="notes-lines"></div></div>
+    </li>
+    {% endfor %}
+  </ol>
+  {% set blank_take_home = true %}
+  {% include "source_appendix.html" %}
+  <p>{{ catalog.workbook.disclaimer }}</p>
+  <p>Private planning material. Keep completed handouts secure; printer queues and saved PDFs may retain copies.</p>
+</section>
+{% endblock %}
