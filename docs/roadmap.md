@@ -2,7 +2,7 @@
 
 Status: Active roadmap  
 Current milestone: MVP 1: Private “death party” workbook  
-Last status review: 2026-11-05
+Last status review: 2026-11-07
 Delivery style: Small vertical MVPs with a runnable application after each milestone
 
 Status legend:
@@ -120,11 +120,76 @@ physical-device performance, manual screen-reader, and physical print checks rem
 release gates. MVP 1 is not declared fully released. See `docs/mvp1-3-review.md` for
 validation, limitations, release/rollback, and deferred work.
 
-Exit criteria:
+### 1.4 GoodToGo branding integration
+
+Status: Mostly complete; supplied branding is integrated and automated checks pass.
+Real-device, manual screen-reader, and physical-print validation remain release checks.
+See [MVP 1.4 review](mvp1-4-review.md) for asset mappings, font provenance, validation,
+release/rollback, and deferred work. Earlier MVP 1 security gates remain open.
+
+Goal: Make the running site and printed handouts recognizably GoodToGo while preserving
+private-session behavior, accessible contrast, theme preferences, and offline usefulness.
+
+Design references:
+
+- [Brand guide](branding/docs/BRAND_GUIDE.md)
+- [Brand CSS tokens](branding/web/brand-tokens.css)
+- Supplied logo, icon, and favicon masters under `docs/branding/`
+
+Scope:
+
+- Package the selected assets under `app/static/`, keeping `docs/branding/` as the
+  source masters; document their mapping and ensure wheel/Docker deployments include
+  them. Do not expose the whole documentation directory as public static content.
+- Replace the “FR” header placeholder with one small supplied compact logo; use the
+  “Get your life in order. For the people you love.” tagline on the home page without
+  a duplicate large hero logo. Apply the brand's calm, human voice to chrome and marketing
+  copy without changing versioned workbook questions or safety/privacy disclaimers.
+- Choose supplied light/dark logo variants or suitable brand-approved backgrounds;
+  preserve aspect ratio and avoid filters, arbitrary recoloring, stretching, and shadows.
+- Add the supplied favicon and appropriate browser/touch icons. A PWA, service worker,
+  install flow, or offline application cache is not part of this milestone.
+- Map the supplied palette into semantic CSS custom properties for the default ocean
+  scheme. Preserve forest, ember, plum, slate, and light/dark/system preferences; keep
+  the logo's identity independent of a user's accent selection.
+- Check actual foreground/background contrast rather than assuming every brand color
+  pairing is accessible; document contrast-safe UI variants where needed, especially
+  for action buttons, links, muted text, selected controls, and focus indicators.
+- Use Manrope for headings and Inter for body/forms if suitable licensed font files can
+  be bundled locally, with source/license records and system fallbacks. The packet does
+  not contain font files; do not add Google Fonts/CDN requests or remote font imports.
+- Integrate the supplied readiness/category icons where they fit existing navigation
+  and section cards. Keep visible text labels and appropriate decorative/accessible
+  treatment; the clipboard remains a readiness icon, not the primary application logo.
+- Apply restrained branding to blank/completed workbook and take-home print views,
+  including a supplied monochrome mark where useful. Preserve handwriting space,
+  full notes, source/version/review metadata, confidentiality warnings, and readable
+  black-and-white output without making exports depend on the running application.
+
+Acceptance and release checks:
+
+- Logos, icons, favicon, fonts (if bundled), and CSS load from the same origin in
+  packaged deployments; no missing assets, external requests, or remote SVG references.
+- Verify mobile/desktop layouts and logo legibility across all five schemes in light,
+  dark, and system modes, including cached theme startup without incorrect-logo flash.
+- Check fluid layout at intermediate window widths, square aligned category icons,
+  small intrinsic image dimensions, and content-versioned public stylesheet URLs so
+  stale CSS cannot leave the new artwork at oversized source dimensions.
+- Add/update route and real-browser asset, keyboard, axe, and contrast regression tests;
+  inspect branding visually, including browser print/PDF and black-and-white output.
+- Keep no-answer-network tests strict: allow only the specific new public asset paths,
+  not broader request exemptions. Workbook, resume, save/clear, and print flows still pass.
+- Record release/rollback notes, asset/font provenance, validation, and deferred checks.
+  No database, resume-format, or content-pack migration is intended; any proposed change
+  to workbook meaning must be separately versioned and reviewed, not hidden in styling.
+
+MVP 1 exit criteria (including branding):
 
 - A participant can complete the flow, leave with a task list, and clear the device
 - Network test proves workbook answers never leave the browser
 - Print output is usable in color and black-and-white
+- Site and handouts use the supplied GoodToGo identity, with MVP 1.4 acceptance checks
+  satisfied and earlier security/manual release gates still accounted for
 
 ## MVP 2: Persistent households and user preferences
 

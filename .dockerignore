@@ -12,3 +12,4 @@ dist
 *.egg-info
 data
 *.zip
+node_modules

@@ -50,6 +50,8 @@ people start from clear instructions instead of guesswork.
 - Browser-only encrypted resume-file download/import, with an independent offline
   recovery tool and a standalone blank printable workbook
 - Light, dark, and system themes with five color schemes
+- Supplied GoodToGo logos, category icons, favicons, brand colors, and locally served
+  Manrope/Inter typography, including restrained monochrome print branding
 - PostgreSQL-ready household, subject, record, task, document, and preference models
 - Versioned YAML workbook catalog
 - Docker Compose deployment
@@ -105,6 +107,11 @@ Encrypted resume actions require HTTPS or localhost, approximately 128 MiB of me
 plus overhead, and a strong, separately stored passphrase. There is no password reset.
 See [resume format and offline recovery](docs/private-resume-format.md). The crypto
 implementation is a prototype pending independent review, not an audited secret vault.
+
+The site's brand assets come from `docs/branding/` and are packaged locally under
+`app/static/branding/`; no external font or image services are used. See the
+[branding integration review](docs/mvp1-4-review.md) for asset mappings, font licenses,
+contrast-safe colors, validation, and remaining manual checks.
 
 ## Current status
 

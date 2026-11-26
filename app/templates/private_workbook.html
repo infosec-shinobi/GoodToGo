@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from '_brand.html' import section_icons with context %}
 
 {% block content %}
 <section class="page-heading no-print">
@@ -64,7 +65,7 @@
 <nav class="section-nav no-print" aria-label="Workbook sections">
   {% for section in catalog.workbook.sections %}
   <a href="#section-{{ section.id }}">
-    <span>{{ loop.index }}. {{ section.title }}</span>
+    <span class="section-label">{{ section_icons(section.id) }}<span>{{ loop.index }}. {{ section.title }}</span></span>
     <span>{{ section.estimated_minutes }} min</span>
   </a>
   {% endfor %}
@@ -74,6 +75,7 @@
   {% for section in catalog.workbook.sections %}
   <section class="workbook-section" aria-labelledby="section-{{ section.id }}">
     <header>
+      <div class="no-print">{{ section_icons(section.id) }}</div>
       <p class="eyebrow">Section {{ loop.index }}</p>
       <h2 id="section-{{ section.id }}">{{ section.title }}</h2>
       <p>{{ section.description }}</p>

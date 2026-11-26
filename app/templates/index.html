@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+{% from '_brand.html' import section_icons with context %}
 
 {% block content %}
 <section class="hero">
+  <div class="hero-copy">
   <p class="eyebrow">A practical act of care</p>
-  <h1>Make the hard things easier for the people you love.</h1>
+  <h1>Get your life in order.<br><span>For the people you love.</span></h1>
   <p class="lede">
     Organize decisions, documents, accounts, household knowledge, and digital-life
     instructions before anyone has to search for them during a crisis.
@@ -11,6 +13,7 @@
   <div class="button-row">
     <a class="button primary" href="/private">Start a private session</a>
     <a class="button secondary" href="#how-it-works">See how it works</a>
+  </div>
   </div>
 </section>
 
@@ -34,8 +37,7 @@
   <div class="card-grid">
     {% for section in catalog.workbook.sections %}
     <article class="card">
-      <p class="step-number">{{ "%02d" | format(loop.index) }}</p>
-      <h3>{{ section.title }}</h3>
+      <div class="card-heading">{{ section_icons(section.id) }}<h3>{{ section.title }}</h3></div>
       <p>{{ section.description }}</p>
     </article>
     {% endfor %}
@@ -56,4 +58,3 @@
   </div>
 </section>
 {% endblock %}
-

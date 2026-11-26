@@ -162,6 +162,29 @@ For authenticated users:
 
 Private-session visitors use only local settings.
 
+### Brand assets and typography
+
+`docs/branding/` remains the source brand packet. Selected unchanged logo, icon,
+favicon, and token files are distributed under `app/static/branding/`, not served
+from the documentation tree. Source/runtime parity and SVG dependency tests guard
+against drift or external references. Licensed Manrope/Inter files and notices ship
+under `app/static/fonts/`; CSS references only same-origin URLs with system fallbacks.
+Existing package-data rules and Docker's application copy include these assets.
+
+Brand tokens feed semantic theme properties; accessible action/control colors are
+separate from decorative brand colors. Existing theme preference keys and schemes
+remain compatible. A single compact header logo uses the original light artwork on
+white in light mode and a transparent dark adaptation with Pale Blue lettering in dark
+mode; there is no duplicate hero logo or bright white dark-mode plaque. Fluid type, gutters, and card grids
+scale across browser widths; icons have square fixed-size frames. The existing early
+theme initialization controls colors, including system media changes. Public stylesheet
+URLs carry content hashes so new templates do not reuse stale layout CSS. Small intrinsic
+image dimensions also bound artwork if CSS is unavailable. Print uses
+the supplied monochrome symbol and keeps source/version/privacy metadata intact.
+This uses the existing static/template architecture, not a build service or PWA.
+
+See [MVP 1.4 integration review](mvp1-4-review.md) for provenance and release checks.
+
 ## Export architecture
 
 Export policies select records based on audience, visibility, subject, and sensitivity.

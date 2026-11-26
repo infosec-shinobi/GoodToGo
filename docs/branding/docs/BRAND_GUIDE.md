@@ -26,6 +26,9 @@ System fallback: system-ui, sans-serif.
 ## Logo system
 - `goodtogo-primary`: road/sun symbol + wordmark + tagline
 - `goodtogo-horizontal`: compact header/marketing use
+- `goodtogo-horizontal-dark`: compact transparent dark-mode adaptation, retaining
+  the horizontal artwork geometry and using Pale Blue instead of white for lettering
+  and the road highlight; added for the application's dark header (2026-11-07)
 - `goodtogo-symbol`: app icon, avatar, social profile
 - `goodtogo-primary-dark`: dark-background version
 - `goodtogo-symbol-monochrome`: one-color-friendly version

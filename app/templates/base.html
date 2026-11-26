@@ -5,27 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <script src="{{ url_for('static', path='/js/theme-init.js') }}"></script>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/app.css') }}">
+    <link rel="icon" href="{{ url_for('static', path='/branding/favicons/goodtogo-favicon.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ url_for('static', path='/branding/favicons/favicon-32.png') }}" type="image/png" sizes="32x32">
+    <link rel="alternate icon" href="{{ url_for('static', path='/branding/favicons/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', path='/branding/favicons/favicon-180.png') }}" sizes="180x180">
+    <link rel="stylesheet" href="{{ url_for('static', path='/branding/brand-tokens.css') }}?v={{ static_version('branding/brand-tokens.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/app.css') }}?v={{ static_version('css/app.css') }}">
     <title>{{ page_title }} | GoodToGo</title>
   </head>
   <body>
     <header class="site-header no-print">
-      <a class="brand" href="/">
-        <span class="brand-mark" aria-hidden="true">FR</span>
-        <span>GoodToGo</span>
+      <a class="brand" href="/" aria-label="GoodToGo home">
+        <img class="brand-light" src="{{ url_for('static', path='/branding/logos/goodtogo-horizontal.svg') }}" width="130" height="52" alt="">
+        <img class="brand-dark" src="{{ url_for('static', path='/branding/logos/goodtogo-horizontal-dark.svg') }}" width="130" height="52" alt="">
       </a>
       <nav aria-label="Primary navigation">
-        <a href="/private">Private workbook</a>
+        <a class="readiness-link" href="/private"><img src="{{ url_for('static', path='/branding/icons/life-plan.svg') }}" width="24" height="24" alt="">Private workbook</a>
         <a href="/settings">Settings</a>
       </nav>
     </header>
     <main>
+      <div class="print-brand print-only">
+        <img src="{{ url_for('static', path='/branding/logos/goodtogo-symbol-monochrome.svg') }}" width="44" height="41" alt="">
+        <p><strong>GoodToGo</strong><br>Get your life in order. For the people you love.</p>
+      </div>
       {% block content %}{% endblock %}
     </main>
     <footer class="site-footer no-print">
+      <p class="footer-tagline">Get your life in order. For the people you love.</p>
       <p>Educational organizer only. Confirm legal, tax, financial, and medical decisions with qualified professionals.</p>
     </footer>
     {% block scripts %}{% endblock %}
   </body>
 </html>
-

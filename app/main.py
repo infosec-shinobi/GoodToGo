@@ -1,3 +1,4 @@
+import hashlib
 from pathlib import Path
 
 from fastapi import FastAPI, Request
@@ -16,6 +17,14 @@ app = FastAPI(
 )
 app.mount("/static", StaticFiles(directory=APP_ROOT / "static"), name="static")
 templates = Jinja2Templates(directory=APP_ROOT / "templates")
+
+
+def static_version(path: str) -> str:
+    """Version public styles without changing caching of private browser state."""
+    return hashlib.sha256((APP_ROOT / "static" / path).read_bytes()).hexdigest()[:12]
+
+
+templates.env.globals["static_version"] = static_version
 
 
 @app.middleware("http")

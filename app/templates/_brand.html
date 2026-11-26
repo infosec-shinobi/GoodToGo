@@ -1,0 +1,15 @@
+{% macro section_icons(section_id) -%}
+{% set icons = {
+  'people-and-roles': ['family'],
+  'legal-and-health': ['legal'],
+  'financial-and-insurance': ['financial'],
+  'digital-life': ['digital'],
+  'household-continuity': ['documents'],
+  'wishes-and-handoff': ['legacy']
+}.get(section_id, ['life-plan']) %}
+<span class="section-icons" aria-hidden="true">
+  {% for icon in icons %}
+  <img src="{{ url_for('static', path='/branding/icons/' ~ icon ~ '.svg') }}" width="32" height="32" alt="">
+  {% endfor %}
+</span>
+{%- endmacro %}
