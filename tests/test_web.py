@@ -132,6 +132,22 @@ def test_personalized_take_home_print_and_privacy_hooks():
     assert ".source-appendix" in stylesheet
 
 
+def test_private_resume_and_blank_workbook_have_no_upload_target():
+    page = client.get("/private").text
+    assert 'id="resume-file" type="file"' in page
+    assert "Lost passphrase = lost access" in page
+    assert "neither answers, files, nor passphrases are uploaded" in page
+    assert "method=" not in page and "action=" not in page
+    assert 'href="/private/workbook/blank"' in page
+    blank = client.get("/private/workbook/blank")
+    assert blank.status_code == 200
+    assert "Conditional question" in blank.text
+    assert "workbook.js" not in blank.text and "resume-crypto.js" not in blank.text
+    assert blank.text.count('class="question-card blank-question"') == sum(
+        len(section.questions) for section in load_catalog().workbook.sections
+    )
+
+
 def test_mvp0_decisions_are_documented():
     review = (PROJECT_ROOT / "docs/mvp0-review.md").read_text(encoding="utf-8")
     roadmap = (PROJECT_ROOT / "docs/roadmap.md").read_text(encoding="utf-8")

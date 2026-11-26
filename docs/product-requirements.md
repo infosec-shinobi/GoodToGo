@@ -36,7 +36,8 @@ A prepared household should be able to answer:
 - Answers stay in browser memory unless device storage is explicitly enabled.
 - Receives a prioritized take-home list with setup guides.
 - Can print a blank or completed workbook and task list.
-- Will later be able to create an encrypted resume file.
+- Can create and unlock an encrypted resume file locally, with explicit replacement
+  confirmation and no server-side answer processing (prototype; security review pending).
 
 ### Persistent household member
 
@@ -170,4 +171,3 @@ Avoid a simplistic “percentage ready for death.” More useful measures includ
 - Digital identity recovery chain tested
 - Offline survival package current
 - Trusted-person recovery test completed
-

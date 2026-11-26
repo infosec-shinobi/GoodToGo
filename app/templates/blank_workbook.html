@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="blank-workbook">
+  <header>
+    <h1>Blank readiness workbook</h1>
+    <p>Private planning material · {{ catalog.workbook.title }}</p>
+    <p>{{ catalog.workbook.disclaimer }}</p>
+    <p>No passwords, PINs, recovery codes, private keys, or safe combinations. Record only credential locations. Keep completed paper/PDF copies secure; printer queues and saved PDFs may retain copies.</p>
+    <p class="no-print">Use your browser’s Print command to print or save as PDF. This handout does not read or change private-session answers.</p>
+    <a class="button secondary no-print" href="/private">Back to private workbook</a>
+  </header>
+  {% for section in catalog.workbook.sections %}
+  <section class="workbook-section">
+    <h2>{{ section.title }}</h2>
+    <p>{{ section.description }} · Estimated time: {{ section.estimated_minutes }} minutes</p>
+    {% for question in section.questions %}
+    <article class="question-card blank-question">
+      <h3>{{ question.prompt }}</h3>
+      <p>{{ question.help_text }}</p>
+      {% if question.applies_when %}
+      <p>Conditional question: complete if your answer to “{{ questions_by_id[question.applies_when.question_id].prompt }}” is {{ question.applies_when.values | join(' or ') }}. Otherwise mark not applicable.</p>
+      {% endif %}
+      {% if question.response_type == 'applicability' %}
+      <p>□ Yes &nbsp; □ No &nbsp; □ Not sure</p>
+      {% else %}
+      <p>□ Ready &nbsp; □ In progress &nbsp; □ Not started &nbsp; □ Not sure &nbsp; □ Need professional help &nbsp; □ Not applicable</p>
+      {% endif %}
+      <div class="task-notes">Safe note, location, or next step:<div class="notes-lines"></div></div>
+    </article>
+    {% endfor %}
+  </section>
+  {% endfor %}
+  {% set blank_take_home = true %}
+  {% include "source_appendix.html" %}
+</section>
+{% endblock %}

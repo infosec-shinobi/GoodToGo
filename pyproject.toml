@@ -27,6 +27,13 @@ dev = [
   "pytest-cov>=6,<8",
   "ruff>=0.11,<1",
 ]
+browser = [
+  "playwright>=1.50,<2",
+  "pypdf>=5,<7",
+]
+recovery = [
+  "cryptography>=44,<48",
+]
 
 [tool.setuptools.packages.find]
 include = ["app*"]
@@ -37,6 +44,7 @@ app = ["content/**/*.yaml", "static/**/*", "templates/**/*.html"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+markers = ["browser: real-browser privacy, resume, and print integration tests"]
 
 [tool.ruff]
 target-version = "py312"
@@ -45,4 +53,3 @@ extend-exclude = ["migrations/versions"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
-

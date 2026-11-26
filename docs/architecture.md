@@ -43,6 +43,12 @@ Private-session invariants:
 - No answers in URLs
 - No unencrypted download feature
 
+Private encrypted resume files use browser-local scrypt and AES-GCM; see
+[ADR 0007](adr/0007-private-resume-format.md) and the
+[format/offline recovery specification](private-resume-format.md). Resume actions
+require HTTPS or localhost. Printable PDFs remain explicit browser print outputs,
+not unencrypted JSON resume downloads. No answer-upload endpoint is introduced.
+
 ### Persistent household
 
 Authenticated users access household-scoped records through FastAPI. The application
@@ -198,6 +204,5 @@ distributed separately.
 - PDF renderer
 - Storage adapter contract
 - PostgreSQL row-level security policy
-- Encrypted browser resume-file format
+- Independent review of the encrypted browser resume-file design in ADR 0007
 - Emergency delegate and break-glass process
-

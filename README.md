@@ -47,6 +47,8 @@ people start from clear instructions instead of guesswork.
 - Local task assignment and target dates, printable notes space, source appendix,
   and a standalone blank take-home handout for paper participants
 - Browser print/save-to-PDF views for the full workbook and take-home list
+- Browser-only encrypted resume-file download/import, with an independent offline
+  recovery tool and a standalone blank printable workbook
 - Light, dark, and system themes with five color schemes
 - PostgreSQL-ready household, subject, record, task, document, and preference models
 - Versioned YAML workbook catalog
@@ -86,12 +88,30 @@ pytest
 ruff check .
 ```
 
+For real-browser privacy, resume, print, and accessibility checks:
+
+```bash
+pip install -e '.[dev,browser,recovery]'
+python -m playwright install chromium
+npm ci
+pytest -m browser
+```
+
+Node.js runs the JavaScript tests during `pytest`; `npm ci` installs the pinned
+development-only axe accessibility checker. Browser tests are skipped if Playwright
+is not installed; their pass status must be checked before release.
+
+Encrypted resume actions require HTTPS or localhost, approximately 128 MiB of memory
+plus overhead, and a strong, separately stored passphrase. There is no password reset.
+See [resume format and offline recovery](docs/private-resume-format.md). The crypto
+implementation is a prototype pending independent review, not an audited secret vault.
+
 ## Current status
 
 This is a deliberately small, functioning foundation rather than a finished
 readiness product. The private workbook, section navigation, time estimates,
-theme controls, public catalog API, client-side take-home list, and browser
-print views work. Authentication, persistent household CRUD, document
+theme controls, public catalog API, client-side take-home list, encrypted resume files,
+and browser print views work. Authentication, persistent household CRUD, document
 encryption, PDF rendering, and legal content review remain roadmap work.
 
 Start with:

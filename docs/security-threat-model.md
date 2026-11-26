@@ -78,8 +78,20 @@ Required verification before release:
 - Clear-session removes private answer storage.
 - Production reverse-proxy logs do not include query strings or request bodies.
 
-An encrypted resume-file feature should use a documented, interoperable format with a
-memory-hard password KDF and authenticated encryption. Do not invent cryptography.
+Encrypted resume files use the documented [v1 envelope](private-resume-format.md)
+with scrypt (N=131072, r=8, p=1) and Web Crypto AES-256-GCM. Algorithms are standard;
+the envelope/payload schema is application-defined. Files are size bounded, KDF costs
+are fixed, and authenticated state/pack compatibility is validated before replacement.
+Passphrases/keys are not deliberately persisted or submitted to the server. Manual
+or inactivity clear cancels pending work. Independent Python recovery is available.
+
+Browser tests observe requests during answers, notes, task edits, save/reload, export,
+failed/successful import, printing, and clear. Workers request only local public code;
+the loaded async implementation also works offline. Tests do not establish security
+against a compromised browser, extension, server-delivered script, or operating system.
+Offline guessing, low-memory failure, and retained JavaScript/library memory copies
+remain risks. Independent cryptographic review and real-device performance checks are
+still required before production claims. See ADR 0007 for limits and recovery policy.
 
 ## Persistent encryption
 
@@ -182,4 +194,3 @@ Before persistent production use:
 - No sensitive logging confirmed
 - Dependency and container scans pass
 - Backup restore completed from documented steps
-

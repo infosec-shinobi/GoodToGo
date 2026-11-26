@@ -15,6 +15,32 @@
   let idleClearTimer;
   let taskCustomizations = {};
   let catalog;
+  let sessionEpoch = 0;
+  let resumeBusy = false;
+  let resumeAbort;
+  const resumePanel = document.getElementById("resume-title");
+  const resumePassword = document.getElementById("resume-password");
+  const resumeConfirm = document.getElementById("resume-confirm");
+  const resumeFile = document.getElementById("resume-file");
+  const resumeReplace = document.getElementById("resume-replace");
+  const resumeStatus = document.getElementById("resume-status");
+  const resumeExport = document.getElementById("resume-export");
+  const resumeImport = document.getElementById("resume-import");
+
+  const applyState = (state) => {
+    form.reset();
+    form.querySelectorAll(".printed-answer").forEach((node) => node.remove());
+    taskCustomizations = state.__tasks || {};
+    Object.entries(state).forEach(([name, value]) => {
+      if (name === "__tasks") return;
+      const textarea = form.querySelector(`textarea[name="${CSS.escape(name)}"]`);
+      if (textarea) textarea.value = value;
+      else {
+        const input = form.querySelector(`input[name="${CSS.escape(name)}"][value="${CSS.escape(value)}"]`);
+        if (input) input.checked = true;
+      }
+    });
+  };
 
   const getFormState = () => {
     const state = {};
@@ -79,8 +105,18 @@
   };
 
   const clearSession = (message) => {
+    sessionEpoch++;
+    resumeAbort?.abort();
+    if (resumePanel) {
+      resumePassword.value = "";
+      resumeConfirm.value = "";
+      resumeFile.value = "";
+      resumeReplace.checked = false;
+      resumeStatus.textContent = "Resume fields cleared. Downloaded files are not deleted by clearing this session.";
+    }
     taskCustomizations = {};
     form.reset();
+    form.querySelectorAll(".printed-answer").forEach((node) => node.remove());
     saveToggle.checked = false;
     localStorage.removeItem(storageKey);
     updateSaveStatus();
@@ -253,8 +289,15 @@
     renderTasks(answers);
   };
 
-  form.addEventListener("change", refresh);
-  form.addEventListener("input", refresh);
+  const updateWorkbook = (event) => {
+    // Notes don't change tasks. Replacing task controls during textarea blur can
+    // steal focus from the task field the participant is moving into.
+    if (event?.target?.tagName === "TEXTAREA") saveIfEnabled();
+    else refresh();
+  };
+  form.addEventListener("change", updateWorkbook);
+  form.addEventListener("input", updateWorkbook);
+  form.addEventListener("submit", (event) => event.preventDefault());
   saveToggle.addEventListener("change", () => {
     if (saveToggle.checked) {
       localStorage.setItem(storageKey, JSON.stringify(getFormState()));
@@ -298,14 +341,108 @@
   });
 
   document.getElementById("print-tasks").addEventListener("click", () => {
+    preparePrint();
     document.body.classList.add("print-take-home-only");
     window.print();
   });
   document.getElementById("print-workbook").addEventListener("click", () => {
+    preparePrint();
     document.body.classList.remove("print-take-home-only");
     window.print();
   });
   window.addEventListener("afterprint", () => document.body.classList.remove("print-take-home-only"));
+
+  const preparePrint = () => {
+    form.querySelectorAll(".question-card").forEach((card) => {
+      card.querySelector(".printed-answer")?.remove();
+      const output = document.createElement("div");
+      output.className = "printed-answer print-only";
+      const selected = card.querySelector('input[type="radio"]:checked');
+      const response = document.createElement("p");
+      response.textContent = `Answer: ${selected ? selected.parentElement.textContent.trim() : "Not answered"}`;
+      const note = document.createElement("p");
+      note.className = "printed-note";
+      note.textContent = `Safe note: ${card.querySelector("textarea").value || "________________"}`;
+      output.append(response, note);
+      card.append(output);
+    });
+    const stamp = document.getElementById("print-generated");
+    if (stamp) stamp.textContent = `Private planning material · Generated ${new Date().toISOString()}`;
+  };
+  window.addEventListener("beforeprint", preparePrint);
+
+  const updateResumeControls = () => {
+    if (!resumePanel) return;
+    const available = Boolean(catalog && globalThis.crypto?.subtle && globalThis.GoodToGoResume && globalThis.scrypt);
+    resumeExport.disabled = resumeBusy || !available;
+    resumeImport.disabled = resumeBusy || !available;
+  };
+
+  if (resumePanel) {
+    resumePassword.addEventListener("input", () => {
+      document.getElementById("resume-strength").textContent = GoodToGoResume.passwordWarning(resumePassword.value);
+    });
+    const runResume = async (importing) => {
+      if (!catalog || resumeBusy) return;
+      if (importing && (!resumeFile.files[0] || !resumeReplace.checked)) {
+        resumeStatus.textContent = "Choose a resume file and confirm replacement first.";
+        return;
+      }
+      if (!importing && (!GoodToGoResume.canExport(resumePassword.value) || resumePassword.value !== resumeConfirm.value)) {
+        resumeStatus.textContent = "Use an unpredictable passphrase of at least 16 characters and make both passphrase fields match.";
+        return;
+      }
+      const epoch = sessionEpoch;
+      const controller = new AbortController();
+      resumeAbort = controller;
+      const cancelled = () => epoch !== sessionEpoch;
+      resumeBusy = true;
+      updateResumeControls();
+      resumeStatus.textContent = importing ? "Unlocking locally…" : "Encrypting locally…";
+      try {
+        if (importing) {
+          const file = resumeFile.files[0];
+          if (file.size > GoodToGoResume.MAX_FILE_BYTES) throw new Error("Resume files must be at most 2 MiB.");
+          const state = await GoodToGoResume.open(await file.text(), resumePassword.value, catalog.workbook, controller.signal);
+          if (cancelled()) return;
+          localStorage.removeItem(storageKey);
+          saveToggle.checked = false;
+          applyState(state);
+          sessionEpoch++;
+          refresh();
+          updateSaveStatus();
+          resetIdleTimers();
+          resumeStatus.textContent = "Resume file loaded. Device saving is off; your answers remain only in this tab.";
+        } else {
+          const encrypted = await GoodToGoResume.seal(getFormState(), resumePassword.value, catalog.workbook, controller.signal);
+          if (cancelled()) return;
+          const url = URL.createObjectURL(new Blob([encrypted], { type: "application/json" }));
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "goodtogo-private.gtg-resume";
+          link.click();
+          window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+          resumeStatus.textContent = "Encrypted download requested. Verify that it saved and test unlocking it before clearing your session.";
+        }
+      } catch (error) {
+        if (!cancelled()) {
+          const safeMessages = ["This file uses a different content pack or version. Use its matching GoodToGo release; no answers were changed.",
+            "Could not unlock the file. The passphrase is incorrect or the file is damaged.", "Resume files must be at most 2 MiB."];
+          resumeStatus.textContent = safeMessages.includes(error.message) ? error.message : "Resume operation failed. Check the file, passphrase, browser support, and available memory. Your session was not replaced.";
+        }
+      } finally {
+        resumePassword.value = "";
+        resumeConfirm.value = "";
+        resumeFile.value = "";
+        resumeReplace.checked = false;
+        resumeBusy = false;
+        resumeAbort = null;
+        updateResumeControls();
+      }
+    };
+    resumeExport.addEventListener("click", () => runResume(false));
+    resumeImport.addEventListener("click", () => runResume(true));
+  }
 
   fetch("/api/v1/catalog", { credentials: "same-origin" })
     .then((response) => {
@@ -318,6 +455,10 @@
       updateSaveStatus();
       resetIdleTimers();
       refresh();
+      updateResumeControls();
+      if (resumePanel) resumeStatus.textContent = globalThis.crypto?.subtle
+        ? "Ready. Resume operations stay in this browser."
+        : "Resume files are unavailable here. Use HTTPS or localhost with a supported browser; no unencrypted fallback is offered.";
     })
     .catch(() => {
       summary.textContent = "The take-home task catalog could not be loaded. Your answers remain in this browser.";
@@ -325,5 +466,6 @@
       updateSaveStatus();
       resetIdleTimers();
       updateProgress(getReadinessAnswers());
+      if (resumePanel) resumeStatus.textContent = "Resume files are unavailable until the public catalog loads. Reload to try again.";
     });
 })();

@@ -10,7 +10,7 @@ def test_workbook_browser_logic():
     if not node:
         pytest.skip("Node.js is required for the dependency-free workbook JavaScript tests")
     result = subprocess.run(
-        [node, "--test", "tests/js/workbook.test.cjs"],
+        [node, "--test", "tests/js/workbook.test.cjs", "tests/js/resume.test.cjs"],
         cwd=Path(__file__).resolve().parents[1],
         capture_output=True,
         text=True,

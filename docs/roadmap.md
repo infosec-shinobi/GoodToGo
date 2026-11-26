@@ -105,11 +105,20 @@ see `docs/mvp1-2-review.md` for release, rollback, and deferred work.
 
 ### 1.3 Private resume and export
 
-- Design an interoperable encrypted resume-file format
-- Add password strength and loss warnings
-- Export and import without server processing
-- Produce blank and completed workbook PDFs through browser print
-- Add no-answer-network browser tests
+- Done for prototype: Design an independently recoverable encrypted resume-file format;
+  see ADR 0007 and `docs/private-resume-format.md`
+- Done: Add passphrase length/repetition feedback, confirmation, and loss warnings
+- Done: Export and import without server processing; validate before replacement,
+  keep device saving off after import, and cancel pending work on clear
+- Done: Produce blank and completed workbook PDFs through browser print, with full
+  safe-note text, source metadata, and sensitive-output warnings
+- Done: Add real Chromium no-answer-network tests, desktop/mobile viewport coverage,
+  offline import, cross-implementation recovery, print, keyboard, and axe checks
+
+Implementation and automated checks are complete; independent cryptographic review,
+physical-device performance, manual screen-reader, and physical print checks remain
+release gates. MVP 1 is not declared fully released. See `docs/mvp1-3-review.md` for
+validation, limitations, release/rollback, and deferred work.
 
 Exit criteria:
 

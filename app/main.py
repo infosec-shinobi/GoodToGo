@@ -66,6 +66,24 @@ async def blank_take_home(request: Request):
     )
 
 
+@app.get("/private/workbook/blank", response_class=HTMLResponse)
+async def blank_workbook(request: Request):
+    catalog = load_catalog()
+    return templates.TemplateResponse(
+        request=request,
+        name="blank_workbook.html",
+        context={
+            "catalog": catalog,
+            "page_title": "Blank workbook",
+            "questions_by_id": {
+                question.id: question
+                for section in catalog.workbook.sections
+                for question in section.questions
+            },
+        },
+    )
+
+
 @app.get("/settings", response_class=HTMLResponse)
 async def settings_page(request: Request):
     return templates.TemplateResponse(

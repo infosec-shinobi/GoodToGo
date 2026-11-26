@@ -1,0 +1,10 @@
+{
+  "name": "goodtogo-browser-tests",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/js/*.test.cjs"
+  },
+  "devDependencies": {
+    "axe-core": "4.10.3"
+  }
+}

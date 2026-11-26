@@ -156,6 +156,14 @@ public official guide.
 
 ## Completed export profiles
 
+MVP 1.3 adds browser-local encrypted resume files (separate from the future profiles
+below). See [format and offline recovery](private-resume-format.md) and
+[the release review](mvp1-3-review.md). The completed workbook print flow includes
+wrapping answer/note text, source metadata, and a repeated generation/version footer.
+The standalone `/private/workbook/blank` route renders every question for paper use,
+including conditional instructions, without loading private browser state. Both use
+browser Print / Save as PDF, not a server-side renderer.
+
 ### Emergency and incapacity
 
 - Emergency contacts
